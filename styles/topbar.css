@@ -1,9 +1,10 @@
-.the-topbar{
+#the-topbar{
     background-color: #f6d0b3;
     height: 50px;
 }
 
-.the-topbar .topbar-site-icon{
+#the-topbar #topbar-site-icon{
+    z-index: 1001;
     transform: rotate(45deg);
     height: 60px;
     width: 60px; 
@@ -13,11 +14,12 @@
     background-color: #de7a57;
 }
 
-.the-topbar .topbar-site-icon img{
+#the-topbar #topbar-site-icon img{
     transform: rotate(-45deg);
 }
 
-.the-topbar .topbar-sidenav-button{
+#the-topbar #topbar-control-sidenav{
+    z-index: 1000;
     height: 40px;
     width: 40px;
     border-radius: 50%;

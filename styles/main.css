@@ -12,6 +12,10 @@
     overflow: auto;
 }
 
+.hide{
+    display: none;
+}
+
 /* Icons */
 
 .icon.medium{
@@ -48,4 +52,10 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
+}
+
+/* Colors */
+
+.background-transparent{
+    background-color: transparent !important;
 }
