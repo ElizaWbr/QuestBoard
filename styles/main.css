@@ -24,6 +24,17 @@
     width: 60px;
 }
 
+/* Buttons */
+
+.btn{
+    border: 0;
+    background-color: #de7a57;
+    transition: background-color 0.3s ease-in-out; /* Duração e tipo de curva */
+}
+
+.btn:hover{
+    background-color: #f09d80;
+}
 
 /* Borders */
 .border-radius{
