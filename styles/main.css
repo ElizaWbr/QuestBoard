@@ -1,0 +1,40 @@
+.background-main{
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f9f7f1;
+}
+
+.body-content{
+    background-color: red;
+    padding: 50px 35px;
+    height: calc(100vh - 150px); /* total - (2 * padding + topbar height) */
+    overflow: auto;
+}
+
+/* Icons */
+
+.icon.medium{
+    height: 30px;
+    width: 30px;
+}
+
+.icon.big{
+    height: 60px;
+    width: 60px;
+}
+
+
+/* Borders */
+.border-radius{
+    border-radius: 15px;
+}
+
+/* Display flex helpers */
+
+.flex-center-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
