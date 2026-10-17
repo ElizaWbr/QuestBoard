@@ -18,13 +18,7 @@ $quest_board_page_id = "home";
         <link rel="stylesheet" href="../styles/banner.css" />
 	</head>
 	<body class="background-main">
-        <!-- Topbar -->
-        <?php include_once("../components/topbar.php"); ?>
-		<!-- Sidenav -->
-		<?php include_once("../components/sidenav.php"); ?>
-        <!-- Enqueue navs scripts -->
-        <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-		<script type="module" src="../js/sidenav.js"></script>
+        <?php include_once "../components/pages-init.php"; ?>
 		<!-- Content -->
 		<div class="body-content">
             inicio inicio inicio inicio inicio inicio inicio <br>
@@ -85,5 +79,7 @@ $quest_board_page_id = "home";
             inicio inicio inicio inicio inicio inicio inicio <br>
             inicio inicio inicio inicio inicio inicio inicio <br>
         </div>
+        <!-- Enqueue scripts -->
+        <script type="module" src="../js/account.js"></script>
 	</body>
 </html>

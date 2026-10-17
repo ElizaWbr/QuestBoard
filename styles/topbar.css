@@ -13,19 +13,9 @@
     }
 }
 
-#the-topbar #topbar-site-icon{
-    z-index: 1001;
-    transform: rotate(45deg);
-    height: 60px;
-    width: 60px; 
-    position: absolute;
+#the-topbar #the-site-icon{
     top: 20px;
     left: 25px;
-    background-color: #de7a57;
-}
-
-#the-topbar #topbar-site-icon img{
-    transform: rotate(-45deg);
 }
 
 #the-topbar #topbar-control-sidenav{

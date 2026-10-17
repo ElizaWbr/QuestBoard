@@ -1,42 +1,74 @@
-.background-main{
+/* Site icon */
+.the-site-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transform: rotate(45deg);
+    height: 60px;
+    width: 60px;
+    background-color: #de7a57;
+    border-radius: 15px;
+    position: absolute;
+}
+
+.the-site-icon img {
+    transform: rotate(-45deg);
+}
+
+.image-fit {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.background-main {
     margin: 0;
     height: 100vh;
     width: 100vw;
     background-color: #f9f7f1;
 }
 
-.body-content{
+.body-content {
     background-color: red;
     padding: 50px 35px;
-    height: calc(100vh - 150px); /* total - (2 * padding + topbar height) */
+    height: calc(100vh - 150px);
+    /* total - (2 * padding + topbar height) */
     overflow: auto;
 }
 
-.hide{
+.full-screen {
+    height: 100vh;
+    width: 100vw;
+}
+
+.hide {
     display: none;
 }
 
 /* Icons */
 
-.icon.medium{
+.icon.medium {
     height: 30px;
     width: 30px;
 }
 
-.icon.big{
+.icon.big {
     height: 60px;
     width: 60px;
 }
 
 /* Buttons */
 
-.btn{
+.btn {
     border: 0;
     background-color: #de7a57;
-    transition: background-color 0.3s ease-in-out; /* Duração e tipo de curva */
+    transition: background-color 0.3s ease-in-out;
+    /* Duração e tipo de curva */
 }
 
-.btn:hover{
+.btn:hover {
     background-color: #f09d80;
 }
 
@@ -48,24 +80,68 @@ a.btn:active {
     background-color: #f09d80;
 }
 
-/* Borders */
-.border-radius{
-    border-radius: 15px;
+.btn.round {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Display flex helpers */
-
-.flex-center-center{
+.btn.text-icon {
+    padding: .5rem 1rem;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
 }
 
+/* Borders */
+.border-radius {
+    border-radius: 15px;
+}
+
+/* Display flex helpers */
+
+.flex-center-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.less-gap {
+    gap: .2rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Colors */
+
+.color-white {
+    color: #fff;
+}
+
+.red {
+    background-color: #d32f2f !important;
+}
+
+.green {
+    background-color: #388e3c !important;
+}
+
 /* Small screens */
 
 @media only screen and (max-width: 400px) {
-    .background-transparent-small{
+    .background-transparent-small {
         background-color: transparent !important;
     }
 }

@@ -1,7 +1,14 @@
 <?php
 
-global $quest_board_page_id;
+global $quest_board_page_id, $pretty_title, $pretty_content, $pretty_icon;
+
 $quest_board_page_id = "my-account";
+
+$pretty_icon = "account";
+$pretty_title = "Minha Conta";
+
+$pretty_content = "<div id='my-account-image-data'></div>";
+$pretty_content .= "<div id='my-account-user-data'></div>";
 
 ?>
 <!doctype html>
@@ -10,24 +17,22 @@ $quest_board_page_id = "my-account";
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="../images/icons/book.svg">
-		<title>Início</title>
+		<title>Minha Conta</title>
 		<!-- Enqueue styles -->
 		<link rel="stylesheet" href="../styles/main.css" />
 		<link rel="stylesheet" href="../styles/topbar.css" />
 		<link rel="stylesheet" href="../styles/sidenav.css" />
+		<link rel="stylesheet" href="../styles/pretty-container.css" />
         <link rel="stylesheet" href="../styles/banner.css" />
 	</head>
 	<body class="background-main">
-        <!-- Topbar -->
-        <?php include_once("../components/topbar.php"); ?>
-		<!-- Sidenav -->
-		<?php include_once("../components/sidenav.php"); ?>
-        <!-- Enqueue navs scripts -->
-        <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-		<script type="module" src="../js/sidenav.js"></script>
+		<?php include_once "../components/pages-init.php"; ?>
 		<!-- Content -->
 		<div class="body-content">
-            minha conta
+            <?php include_once "../components/pretty-container.php"; ?>
         </div>
+		<!-- Enqueue page scripts -->
+        <script type="module" src="../js/account.js"></script>
+		<script type="module" src="../js/my-account.js"></script>
 	</body>
 </html>

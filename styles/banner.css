@@ -1,3 +1,5 @@
+/* One side banner */
+
 .one-side-banner{
     padding: 1rem 1rem 1rem 2.5rem;
     width: stretch;
@@ -12,3 +14,69 @@
     background-color: #f9f7f1;
 }
 
+/* Two sides banner */
+
+.two-sides-banner{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.two-sides-banner .banner-top{
+    background-color: #ef815b;
+    width: 50%;
+    min-width: 200px;
+    max-width: 500px;
+    padding: .8rem;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 3;
+}
+.two-sides-banner .banner-top h2{
+    margin: 0;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: larger;
+}
+
+.two-sides-banner .banner-bottom{
+    display: flex;
+    justify-content: space-between;
+    height: 2.5rem;
+    width: 70%;
+    max-width: 620px;
+    min-width: 300px;
+    margin-top: -1.5rem;
+}
+
+.two-sides-banner .banner-bottom .side-left{
+    background-color: #de7a57;
+    height: 100%;
+    width: 70px;
+    clip-path: polygon(round 2px, 0 0, 100% 0, 100% 100%, 0 100%, 30% 50%);
+}
+
+.two-sides-banner .banner-bottom .side-right{
+    background-color: #de7a57;
+    height: 100%;
+    width: 70px;
+    clip-path: polygon(round 2px, 0 0, 100% 0, 70% 50%, 100% 100%, 0 100%);
+    
+}
+
+/* Height limiter */
+
+.banner-title-height-limiter {
+    
+}
+
+
+/* Big screens */
+
+@media only screen and (min-width: 600px) {
+    .two-sides-banner .banner-top h2{
+        font-size: x-large;
+    }
+}

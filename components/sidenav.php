@@ -10,6 +10,7 @@
     $pages = [
         "home" => "Início",
         "my-account" => "Minha conta",
+        "manage" => "Novo Evento",
         "events" => "Eventos",
         "calendar" => "Calendário"
     ];
@@ -24,4 +25,11 @@
         }
         ?>
     </div>
+    <div class="logout-button-container">
+        <button id="firebase-logout" class="btn round">
+            <img src="../images/icons/logout.svg" alt="Logout" class="icon medium"/>
+        </button>
+    </div>
 </div>
+<script type="module" src="../js/sidenav.js"></script>
+<script type="module" src="../js/logout.js"></script>

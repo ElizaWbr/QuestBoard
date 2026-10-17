@@ -1,0 +1,30 @@
+.container-round-medium {
+    width: calc(100% - 2rem);
+    background-color: #f6d0b3;
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.container-round-light{
+    width: calc(100% - 2rem);
+    background-color: #f9e6d7;
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.event-form {
+    height: max-content;
+    width: 100%;
+    margin: 3rem 0;
+    background-color: transparent;
+}
+
+.event-form .container-round-medium{
+    margin: 2rem 0;
+}
+
+.event-form .container-round-light{
+    margin: -2.5rem 0;
+}
