@@ -1,9 +1,25 @@
 #the-sidenav{
-    height: calc(100vh - 100px);
-    width: calc(88vw - 70px);
+    height: calc(100vh - 110px);
+    width: calc(88vw);
+    max-width: 300px;
     position: fixed;
     top: 0;
     background-color: #f6d0b3;
-    padding: 50px 35px;
+    padding: 110px 0;
     border-radius: 0 30px 30px 0;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+#the-sidenav.slide-away {
+    transform: translateX(-100%);
+}
+
+#the-sidenav .sidenav-banners-container{
+    width: calc(100% - 3rem);
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-end;
+    padding-left: 3rem;
+    gap: .6rem;
 }
