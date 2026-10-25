@@ -22,6 +22,14 @@
 }
 
 .event-form .container-round-medium{
+    margin: 4rem 0;
+}
+
+.event-form .container-round-medium.first{
+    margin: 2rem 0;
+}
+
+.event-form .container-round-medium.last{
     margin: 2rem 0;
 }
 

@@ -29,7 +29,7 @@ $pretty_content .= "<p id='firebase-auth-message'></p>";
         <!-- Enqueue navs scripts -->
         <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 		<!-- Content -->
-        <div class="full-screen">
+        <div class="full-screen flex-center-center">
 		    <?php include_once "../components/pretty-container.php"; ?>
         </div>
         <!-- Enqueue scripts -->

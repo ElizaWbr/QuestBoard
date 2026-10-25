@@ -11,6 +11,7 @@
         "home" => "Início",
         "my-account" => "Minha conta",
         "manage" => "Novo Evento",
+        "accept" => "Entrar em Evento",
         "events" => "Eventos",
         "calendar" => "Calendário"
     ];

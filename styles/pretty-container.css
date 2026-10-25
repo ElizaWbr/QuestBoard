@@ -3,6 +3,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 .first-pretty-layer {
@@ -43,6 +44,10 @@
     position: static;
     margin-bottom: -10px;
     z-index: 2;
+}
+
+.second-pretty-layer .pretty-header .the-site-icon .icon {
+    z-index: 5;
 }
 
 .second-pretty-layer .pretty-content {
