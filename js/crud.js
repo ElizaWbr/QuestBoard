@@ -28,17 +28,17 @@ export function getCurrentUser() {
 
 /* Names */
 
-function getQuestDatabaseName(id = "") {
+export function getQuestDatabaseName(id = "") {
     let name = eventsDatabaseName;
     return getDatabaseName(id, name);
 }
 
-function getAcceptedDatabaseName(id = "") {
+export function getAcceptedDatabaseName(id = "") {
     let name = "Users/" + getCurrentUserUid() + "/" + acceptedDatabaseName;
     return getDatabaseName(id, name);
 }
 
-function getCreatedDatabaseName(id = "") {
+export function getCreatedDatabaseName(id = "") {
     let name = "Users/" + getCurrentUserUid() + "/" + createdDatabaseName;
     return getDatabaseName(id, name);
 }
@@ -236,3 +236,4 @@ async function removeFromAccepted(id) {
     updateMembers(id, false);
     await deleteDoc(docRef);
 }
+

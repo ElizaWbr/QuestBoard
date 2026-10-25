@@ -1,4 +1,6 @@
-import { getQuestData, saveInAccepted, getCurrentUserUid } from "./crud.js";
+import { firebaseDB } from "./firebase.js";
+import { getQuestData, saveInAccepted, getCurrentUserUid, getAcceptedDatabaseName } from "./crud.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 $(document).ready(async function () {
     addAcceptAction();
@@ -22,7 +24,7 @@ async function getValidQuest() {
 
     const quest = await getQuestData(questId);
     if (!quest) {
-        displayError("Não foi possível encotrar esse evento. Adicine outro ID e tente novamente.");
+        displayError("Não foi possível encontrar esse evento. Adicione outro ID e tente novamente.");
         return false;
     }
 
@@ -33,22 +35,42 @@ async function getValidQuest() {
 }
 
 async function checkQuest() {
-    displaySummaryContainer();
-
+    console.log("a");
     const quest = await getValidQuest();
+    if (!quest) {
+        return;
+    }
+
+    let accepted = await checkAccepted(quest.id);
+    if (accepted) {
+        displayError("Você já está fazendo parte desse evento.");
+        return;
+    }
 
     const author = quest.author;
     const currentUser = getCurrentUserUid();
-    
+
     if (author == currentUser) {
         displayError("Não é possível ingressar no seu próprio evento.");
         return;
     }
 
     if (quest) {
-        displayQuest(quest);
+        await displayQuest(quest);
         $("#accept-valid-event-data").slideDown();
+        displaySummaryContainer();
     }
+}
+
+async function checkAccepted(id) {
+    const acceptedRef = doc(firebaseDB, getAcceptedDatabaseName(id));
+    const acceptedSnap = await getDoc(acceptedRef);
+
+    if (!acceptedSnap.exists()) {
+        return null;
+    }
+
+    return acceptedSnap.id;
 }
 
 async function acceptQuest() {
@@ -63,12 +85,13 @@ function displaySummaryContainer() {
 }
 
 function displayError(error) {
+    displaySummaryContainer();
     $("#accept-valid-event-data").slideUp();
     $("#ivalid-event-warning").slideDown();
     $("#ivalid-event-warning").html(error);
 }
 
-function displayQuest(quest) {
+async function displayQuest(quest) {
     $("#ivalid-event-warning").slideUp();
     $("#ivalid-event-warning").html("");
 
@@ -82,45 +105,6 @@ function displayQuest(quest) {
     $("#manage-event-edited-date").text("Editado em: " + formatDate(quest.dtup));
     $("#manage-event-members-counter").text("Membros: " + quest.members);
     $("#manage-event-confirmed-counter").text("Confirmações: " + quest.confirmed);
-
-    
-}
-
-async function setSavedData() {
-    let questId = $("#event-id").val();
-    if (!questId) {
-        hideDeleteButton();
-        return;
-    }
-
-    const quest = await getQuestData(questId);
-    if (!quest) {
-        hideDeleteButton();
-        return;
-    }
-
-    console.log(quest);
-
-    updateQuestSummary(quest);
-
-    $("#event-name").val(quest.name);
-    $("#event-description").val(quest.description);
-    $("#event-date-start").val(quest.date_start);
-    $("#event-date-end").val(quest.date_end);
-    $("#event-time-start").val(quest.time_start);
-    $("#event-time-end").val(quest.time_end);
-    $("#event-ticket-price").val(quest.ticket_price);
-    $("#event-ticket-url").val(quest.ticket_url);
-    $("#event-obs").val(quest.obs);
-    $("#event-color").val(quest.color);
-    $("#event-image").val(quest.image);
-
-    if (quest.ticket) {
-        $("#event-ticket").attr("checked", "checked");
-        $("#event-ticket").trigger("change");
-    }
-
-    // $("#manage-save-event").on("click");
 }
 
 function hideDeleteButton() {
@@ -128,8 +112,6 @@ function hideDeleteButton() {
         $("#manage-delete-event").addClass("hide");
     }
 }
-
-
 
 function formatDate(date) {
     let toDate = date.toDate();

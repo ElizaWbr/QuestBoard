@@ -12,6 +12,8 @@
         "my-account" => "Minha conta",
         "manage" => "Novo Evento",
         "accept" => "Entrar em Evento",
+        "events-created" => "Meus Eventos",
+        "events-accepted" => "Eventos Aceitos",
         "events" => "Eventos",
         "calendar" => "Calendário"
     ];

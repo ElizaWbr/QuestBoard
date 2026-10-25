@@ -39,8 +39,8 @@ $banner_title = "Entrar em Evento";
 					</div>
 					<div class="flex-center-center">
 						<button type="button" id="enter-event" name="enter_event" class="btn text-icon green color-white">
-							<img src="../images/icons/save.svg" alt="Enter" class="icon medium" />
-							Enter
+							<img src="../images/icons/magnify.svg" alt="Enter" class="icon medium" />
+							Procurar
 						</button>
 					</div>
 				</div>
@@ -61,7 +61,7 @@ $banner_title = "Entrar em Evento";
 
 					<div class="flex-center-center">
 						<button type="button" id="accept-valid-event" name="accept_valid_event" class="btn text-icon green color-white">
-							<img src="../images/icons/save.svg" alt="Enter" class="icon medium" />
+							<img src="../images/icons/check-circle.svg" alt="Enter" class="icon medium" />
 							Confirmar
 						</button>
 					</div>
@@ -72,6 +72,7 @@ $banner_title = "Entrar em Evento";
 	<!-- Enqueue scripts -->
 	<script type="module" src="../js/crud.js"></script>
 	<script type="module" src="../js/accept.js"></script>
+	<script type="module" src="../js/created-events.js"></script>
 </body>
 
 </html>
