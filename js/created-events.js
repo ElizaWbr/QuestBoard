@@ -1,34 +1,45 @@
 import { firebaseDB } from "./firebase.js";
-import { getQuestDatabaseName, getAcceptedDatabaseName, getCreatedDatabaseName, formatDate, getManagePageUrl, getEnterQuestPageUrl, removeFromAccepted, getDeletedEventMessage, isQuestDeleted } from "./crud.js";
+import { getQuestDatabaseName, getAcceptedDatabaseName, getCreatedDatabaseName, formatDate, getManagePageUrl, getEnterQuestPageUrl, removeFromAccepted, getDeletedEventMessage, isQuestDeleted, getCurrentUserUid } from "./crud.js";
 import { collection, getDocs, query, where, documentId } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
+const allQuestsContainerId = "all-quests-container";
 const createdContainerId = "created-quests-container";
 const acceptedContainerId = "accepted-quests-container";
+const deletedAcceptedContainerId = "deleted-accepted-quests-container";
 
 $(document).ready(async function () {
-
+    await buildCurrentUserAllQuests();
     await buildCurrentUserCreatedEvents();
     await buildCurrentUserAcceptedEvents();
-
-    // await getAllQuests();
-    // await getCurrentUserCreatedEvents();
-    // await getCurrentUserAcceptedEvents();
 });
+
+async function buildCurrentUserAllQuests() {
+    if ($("#" + allQuestsContainerId).length > 0) {
+        let curretUser = await getCurrentUserUid();
+        let events = await getAllQuests();
+        if (events.length > 0) {
+            events.forEach((quest) => {
+                let type = curretUser == quest.author ? "created" : "accepted";
+                buildQuestHtml(quest, type, allQuestsContainerId);
+            });
+        } else {
+            let html = getNoCreatedHtml();
+            html += getNoAddedHtml();
+            $("#" + allQuestsContainerId).append(html);
+        }
+    }
+}
 
 async function buildCurrentUserCreatedEvents() {
     if ($("#" + createdContainerId).length > 0) {
         let created = await getCurrentUserCreatedEvents();
-        console.log(created);
         if (created.length > 0) {
             created.forEach((quest) => {
                 /* We remove from created events when updating deletion, we dont need to do anything here */
                 buildQuestHtml(quest, "created", createdContainerId);
             });
         } else {
-            let message = "Você ainda não adicionou nenhum evento";
-            let label = "Clique aqui para adicionar um novo evento";
-            let url = getManagePageUrl();
-            let html = getNoDataHtml(message, label, url);
+            let html = getNoCreatedHtml();
             $("#" + createdContainerId).append(html);
         }
     }
@@ -46,13 +57,24 @@ async function buildCurrentUserAcceptedEvents() {
                 }
             });
         } else {
-            let message = "Você ainda não entrou nenhum evento";
-            let label = "Clique aqui para entrar em um novo evento";
-            let url = getEnterQuestPageUrl();
-            let html = getNoDataHtml(message, label, url);
+            let html = getNoAddedHtml();
             $("#" + acceptedContainerId).append(html);
         }
     }
+}
+
+function getNoCreatedHtml() {
+    let message = "Você ainda não adicionou nenhum evento";
+    let label = "Clique aqui para adicionar um novo evento";
+    let url = getManagePageUrl();
+    return getNoDataHtml(message, label, url);
+}
+
+function getNoAddedHtml() {
+    let message = "Você ainda não entrou nenhum evento";
+    let label = "Clique aqui para entrar em um novo evento";
+    let url = getEnterQuestPageUrl();
+    return getNoDataHtml(message, label, url);
 }
 
 function getNoDataHtml(message, label, url) {
@@ -71,7 +93,10 @@ function buildQuestHtml(quest, type, container) {
 
     let page = "";
     let buttonImage = "";
-    if (type == "created") {
+
+    let isCreated = type == "created";
+
+    if (isCreated) {
         page = "manage.php";
         buttonImage += "<img src='../images/icons/pencil.svg' alt='Enter' class='icon medium round-transparent' />";
     } else {
@@ -87,6 +112,7 @@ function buildQuestHtml(quest, type, container) {
         image = "../images/no-image-icon-square.png";
     }
 
+    let isSameDay = quest.date_start == quest.date_end;
     let date_start = formatDate(quest.date_start);
     let date_end = formatDate(quest.date_end);
 
@@ -125,15 +151,28 @@ function buildQuestHtml(quest, type, container) {
     html += "<h4 class='event-title'>" + quest.name + "</h4>";
     html += "<p class='event-description'>" + quest.description + "</p>";
 
-    html += "<p class='event-start'>";
-    html += "<img src='../images/icons/calendar-start.svg' alt='Calendar start' class='icon medium round-transparent' />";
-    html += "Início: " + date_start + " - " + quest.time_start;
-    html += "</p>";
+    if (isSameDay) {
+        html += "<p class='event-date'>";
+        html += "<img src='../images/icons/calendar-start.svg' alt='Calendar date' class='icon medium round-transparent' />";
+        html += date_start;
+        html += "</p>";
 
-    html += "<p class='event-end'>";
-    html += "<img src='../images/icons/calendar-end.svg' alt='Calendar end' class='icon medium round-transparent' />";
-    html += "Fim: " + date_end + " - " + quest.time_end;
-    html += "</p>";
+        html += "<p class='event-start'>";
+        html += "<img src='../images/icons/clock.svg' alt='Time' class='icon medium round-transparent' />";
+        html += "Das " + quest.time_start + " até " + quest.time_end;
+        html += "</p>";
+
+    } else {
+        html += "<p class='event-start'>";
+        html += "<img src='../images/icons/calendar-start.svg' alt='Calendar start' class='icon medium round-transparent' />";
+        html += "Início: " + date_start + " - " + quest.time_start;
+        html += "</p>";
+
+        html += "<p class='event-end'>";
+        html += "<img src='../images/icons/calendar-end.svg' alt='Calendar end' class='icon medium round-transparent' />";
+        html += "Fim: " + date_end + " - " + quest.time_end;
+        html += "</p>";
+    }
 
     html += "<p class='event-location'>";
     html += "<img src='../images/icons/location.svg' alt='Location' class='icon medium round-transparent' />";
@@ -141,6 +180,13 @@ function buildQuestHtml(quest, type, container) {
     html += "</p>";
 
     html += "</div>";
+
+    if (isCreated) {
+        html += "<div class='card no-margin'>";
+        html += "<span>Código para convite: " + quest.id + "</span>";
+        html += "</div>";
+    }
+
     html += "</div>";
 
     /* Bottom */
@@ -178,7 +224,7 @@ function removeRelationAndAddMessage(quest) {
 
     html += "</div>";
     html += "</div>";
-    $("#deleted-accepted-quests-container").append(html);
+    $("#" + deletedAcceptedContainerId).append(html);
 
     $("#" + removeId).on("click", async function () {
         let id = $(this).val();
@@ -211,14 +257,15 @@ async function getEventsInDatabase(database) {
         if (ids.length === 0) {
             return [];
         }
-        return await getQuestsInIds(ids);
+        const events = await getQuestsInIds(ids);
+        return filterAndSortEvents(events);
     } catch (error) {
         console.error("Erro ao buscar os documentos:", error);
         return [];
     }
 }
 
-async function getQuestsInIds(ids) {
+export async function getQuestsInIds(ids) {
     try {
         const questsRef = collection(firebaseDB, await getQuestDatabaseName());
         const eventsQuery = query(
@@ -239,24 +286,42 @@ async function getQuestsInIds(ids) {
 
 export async function getAllQuests() {
     try {
-        const collectionRef = collection(firebaseDB, await getQuestDatabaseName());
-        const snapshot = await getDocs(collectionRef);
+        const [createdEvents, acceptedEvents] = await Promise.all([
+            getCurrentUserCreatedEvents(),
+            getCurrentUserAcceptedEvents()
+        ]);
 
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-
-            console.log("ID:", doc.id);
-            console.log(data);
-        });
-
-        // return snapshot.docs.map((doc) => ({
-        //     id: doc.id,
-        //     ...doc.data()
-        // }));
+        return filterAndSortEvents([
+            ...createdEvents,
+            ...acceptedEvents
+        ]);
 
     } catch (error) {
-        console.error("Erro ao buscar os documentos:", error);
+        console.error("Erro ao buscar todos os eventos:", error);
         return [];
     }
 }
 
+function filterAndSortEvents(events) {
+    const now = new Date();
+
+    const today = [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+    ].join("-");
+
+    return events
+        .filter(event => event.date_end >= today)
+        .sort((a, b) => {
+            // Primeiro compara as datas
+            const dateCompare = a.date_start.localeCompare(b.date_start);
+
+            if (dateCompare !== 0) {
+                return dateCompare;
+            }
+
+            // Se as datas forem iguais, compara os horários
+            return a.time_start.localeCompare(b.time_start);
+        });
+}

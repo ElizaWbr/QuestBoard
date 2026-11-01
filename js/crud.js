@@ -19,6 +19,14 @@ export async function getCurrentUser() {
     }
 }
 
+export async function isCurrentUserAuthor(questId, quest = []) {
+    let currentUser = await getCurrentUserUid();
+    if (!quest) {
+        quest = await getQuestData(questId);
+    }
+    return quest.author == currentUser;
+}
+
 /* Names */
 
 export async function getQuestDatabaseName(id = "") {
@@ -112,7 +120,7 @@ export async function addEvent(data) {
 
     await saveInCreated(docRef.id);
 
-    redirectToManagePageUrl();
+    redirectToManagePageUrl(docRef.id);
 }
 
 export async function updateEvent(id, data) {
@@ -128,9 +136,7 @@ export async function updateEvent(id, data) {
     await updateDoc(docRef, data);
 
     console.log("Evento atualizado");
-    // reloadPage();
-
-    return docRef.id;
+    reloadPage();
 }
 
 export async function deleteEvent(id) {
@@ -186,7 +192,7 @@ export function displayDeletedEventWarning(quest) {
     }
 }
 
-export function isQuestDeleted(quest){
+export function isQuestDeleted(quest) {
     return typeof quest.deleted != "undefined";
 }
 
@@ -230,6 +236,10 @@ export async function getCustomerConfirmedInAccepted(id) {
 }
 
 export async function saveInAccepted(id) {
+    let isCurrentUser = await isCurrentUserAuthor(id);
+    if (isCurrentUser) {
+        return;
+    }
     let databaseName = await getAcceptedDatabaseName(id);
     const docRef = doc(firebaseDB, databaseName);
     await setDoc(docRef, {
@@ -248,6 +258,11 @@ export async function confirmInAccepted(id) {
         return;
     }
 
+    let isCurrentUser = await isCurrentUserAuthor(id);
+    if (isCurrentUser) {
+        return;
+    }
+
     let databaseName = await getAcceptedDatabaseName(id);
     let docRef = doc(firebaseDB, databaseName);
     await updateDoc(docRef, {
@@ -261,6 +276,10 @@ export async function confirmInAccepted(id) {
 
 export async function removeFromAccepted(id) {
     try {
+        let isCurrentUser = await isCurrentUserAuthor(id);
+        if (isCurrentUser) {
+            return;
+        }
         let databaseName = await getAcceptedDatabaseName(id);
         const docRef = doc(firebaseDB, databaseName);
         const snap = await getDoc(docRef);
@@ -277,7 +296,6 @@ export async function removeFromAccepted(id) {
         console.error("Erro ao remover evento:", error);
     }
 }
-
 
 export async function validateQuestInUser(quest) {
     let currentUser = await getCurrentUserUid();

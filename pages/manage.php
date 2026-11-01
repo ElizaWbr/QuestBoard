@@ -40,6 +40,9 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 				<span id="manage-event-edited-date"></span>
 				<span id="manage-event-members-counter"></span>
 				<span id="manage-event-confirmed-counter"></span>
+				<div class='card margin-top'>
+				<span id="manage-event-invite-code"></span>
+				</div>
 			</div>
 		</div>
 		<form class="event-form" method="post">
@@ -58,7 +61,7 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 						<input type="email" id="event-contact-email" name="event_contact_email" />
 					</div>
 					<div class="input-field">
-						<label for="event-contact-phone">phone para contato</label>
+						<label for="event-contact-phone">Telefone para contato</label>
 						<input type="phone" id="event-contact-phone" name="event_contact_phone" />
 					</div>
 				</div>

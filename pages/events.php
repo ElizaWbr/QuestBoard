@@ -31,7 +31,7 @@ $banner_title = "Eventos";
         </div>
         <div id="deleted-accepted-quests-container">
         </div>
-        <div id="accepted-quests-container">
+        <div id="all-quests-container">
         </div>
     </div>
     <!-- Enqueue scripts -->

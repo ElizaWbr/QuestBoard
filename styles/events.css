@@ -63,9 +63,6 @@
     justify-content: flex-end;
 }
 
-.container-added-event-data{
-
-}
 h4.event-title{
     margin: 0;
 }
@@ -74,4 +71,8 @@ h4.event-title{
     gap: 0.5rem;
     align-items: center;
     margin: 5px 0;
+}
+
+.container-added-event-data p.event-description{
+    margin-bottom: 1rem;
 }

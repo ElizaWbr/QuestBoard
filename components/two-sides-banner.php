@@ -18,7 +18,7 @@ if ($banner_icon_img) {
         </div>
     <?php } ?>
     <div class="banner-top">
-        <h2>
+        <h2 id="page-banner-title">
             <?php echo $banner_title; ?>
         </h2>
     </div>

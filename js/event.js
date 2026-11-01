@@ -1,4 +1,4 @@
-import { getQuestData, formatDateObject, formatDate, getCustomerConfirmedInAccepted, confirmInAccepted, reloadPage, removeFromAccepted, redirectToEventPageUrl, validateQuestInUser, isQuestDeleted, displayDeletedEventWarning } from "./crud.js";
+import { getQuestData, formatDateObject, formatDate, getCustomerConfirmedInAccepted, confirmInAccepted, reloadPage, removeFromAccepted, redirectToEventPageUrl, validateQuestInUser, isQuestDeleted, displayDeletedEventWarning, isCurrentUserAuthor } from "./crud.js";
 
 $(document).ready(async function () {
     await setSavedData();
@@ -28,11 +28,20 @@ async function setSavedData() {
         return;
     }
 
-    const confirmedByUser = await getCustomerConfirmedInAccepted(questId);
-    if (confirmedByUser != 0) {
+    let currentUser = await isCurrentUserAuthor(questId, quest);
+    if (currentUser) {
         $("#confirm-event").attr("disabled", "disabled");
+        $("#remove-event").attr("disabled", "disabled");
+        $("#remove-event-confirm").attr("disabled", "disabled");
+        $("#remove-event-cancel").attr("disabled", "disabled");
     } else {
-        addConfirmEventAction(questId);
+        const confirmedByUser = await getCustomerConfirmedInAccepted(questId);
+        if (confirmedByUser != 0) {
+            $("#confirm-event").attr("disabled", "disabled");
+        } else {
+            addConfirmEventAction(questId);
+        }
+        addRemoveEventAction(questId);
     }
 
     $("#event-created-name").text(quest.name);
@@ -73,10 +82,6 @@ async function setSavedData() {
         $("#event-ticket").attr("checked", "checked");
         $("#event-ticket").trigger("change");
     }
-
-    addRemoveEventAction(questId);
-
-    // $("#manage-save-event").on("click");
 }
 
 function updateQuestSummary(quest) {

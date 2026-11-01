@@ -105,8 +105,8 @@ $banner_title = "Evento";
                 <div class="container-round-medium last">
                     <div class="container-round-light">
                         <p class="no-margin-top">Em caso de dúvidas entre em contato com a gente:</p>
-                        <span id="event-author-email-text"></span>
-                        <span id="event-author-phone-text"></span>
+                        <p id="event-author-email-text" class="no-margin"></p>
+                        <p id="event-author-phone-text" class="no-margin"></p>
                     </div>
                 </div>
             </div>

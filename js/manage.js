@@ -62,7 +62,7 @@ async function doSaveEvent() {
 
     let error = "";
     for (const [key, value] of Object.entries(data)) {
-        if (key == "ticket" || key == "image" || key == "ticket_url") {
+        if (key == "ticket" || key == "ticket_price" || key == "ticket_url" || key == "image" || key == "obs") {
             continue;
         }
         if (!value) {
@@ -103,7 +103,7 @@ function updateQuestSummary(quest) {
     $("#manage-event-edited-date").text("Editado em: " + formatDateObject(quest.dtup));
     $("#manage-event-members-counter").text("Membros: " + quest.members);
     $("#manage-event-confirmed-counter").text("Confirmações: " + quest.confirmed);
-
+    $("#manage-event-invite-code").text("Código para convite: " + quest.id);
     $("#event-summary-content").slideDown();
 }
 
