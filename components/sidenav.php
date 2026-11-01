@@ -10,12 +10,12 @@
     $pages = [
         "home" => "Início",
         "my-account" => "Minha conta",
+        "calendar" => "Calendário",
         "manage" => "Novo Evento",
         "accept" => "Entrar em Evento",
-        "events-created" => "Meus Eventos",
-        "events-accepted" => "Eventos Aceitos",
         "events" => "Eventos",
-        "calendar" => "Calendário"
+        "events-created" => "Meus Eventos",
+        "events-accepted" => "Eventos Aceitos"
     ];
 ?>
 

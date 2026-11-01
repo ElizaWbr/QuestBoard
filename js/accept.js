@@ -1,5 +1,5 @@
 import { firebaseDB } from "./firebase.js";
-import { getQuestData, saveInAccepted, getCurrentUserUid, getAcceptedDatabaseName } from "./crud.js";
+import { getQuestData, saveInAccepted, getCurrentUserUid, getAcceptedDatabaseName, redirectToEventPageUrl, isQuestDeleted } from "./crud.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 $(document).ready(async function () {
@@ -23,7 +23,7 @@ async function getValidQuest() {
     }
 
     const quest = await getQuestData(questId);
-    if (!quest) {
+    if (!quest || isQuestDeleted(quest)) {
         displayError("Não foi possível encontrar esse evento. Adicione outro ID e tente novamente.");
         return false;
     }
@@ -35,7 +35,6 @@ async function getValidQuest() {
 }
 
 async function checkQuest() {
-    console.log("a");
     const quest = await getValidQuest();
     if (!quest) {
         return;
@@ -48,7 +47,7 @@ async function checkQuest() {
     }
 
     const author = quest.author;
-    const currentUser = getCurrentUserUid();
+    const currentUser = await getCurrentUserUid();
 
     if (author == currentUser) {
         displayError("Não é possível ingressar no seu próprio evento.");
@@ -63,7 +62,7 @@ async function checkQuest() {
 }
 
 async function checkAccepted(id) {
-    const acceptedRef = doc(firebaseDB, getAcceptedDatabaseName(id));
+    const acceptedRef = doc(firebaseDB, await getAcceptedDatabaseName(id));
     const acceptedSnap = await getDoc(acceptedRef);
 
     if (!acceptedSnap.exists()) {
@@ -76,7 +75,8 @@ async function checkAccepted(id) {
 async function acceptQuest() {
     const quest = await getValidQuest();
     if (quest) {
-        saveInAccepted(quest.id);
+        await saveInAccepted(quest.id);
+        redirectToEventPageUrl(quest.id);
     }
 }
 
@@ -95,22 +95,15 @@ async function displayQuest(quest) {
     $("#ivalid-event-warning").slideUp();
     $("#ivalid-event-warning").html("");
 
-    $("#manage-event-user-name").text("Nome: " + quest.author_name);
+    $("#event-name").text(quest.name);
+    $("#event-description").text(quest.description);
+
+    $("#manage-event-user-name").text("Criado por " + quest.author_name);
     $("#manage-event-user-email").text("E-mail: " + quest.author_email);
 
-    $("#manage-event-image").text("Imagem: " + quest.image);
-    $("#manage-event-color").text("Cor: " + quest.color);
-
     $("#manage-event-created-date").text("Criado em: " + formatDate(quest.dt));
-    $("#manage-event-edited-date").text("Editado em: " + formatDate(quest.dtup));
     $("#manage-event-members-counter").text("Membros: " + quest.members);
     $("#manage-event-confirmed-counter").text("Confirmações: " + quest.confirmed);
-}
-
-function hideDeleteButton() {
-    if ($("#manage-delete-event").length > 0) {
-        $("#manage-delete-event").addClass("hide");
-    }
 }
 
 function formatDate(date) {

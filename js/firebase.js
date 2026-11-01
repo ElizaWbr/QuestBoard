@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 // import { getStorage } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js";
 
 // Your web app's Firebase configuration
@@ -24,9 +25,24 @@ export const firebaseGoogleProvider = new GoogleAuthProvider();
 /* Database */
 export const firebaseDB = getFirestore(firebaseApp);
 
+export function getAuthUser() {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(
+            firebaseAuth,
+            (user) => {
+                unsubscribe();
+                resolve(user);
+            },
+            (error) => {
+                unsubscribe();
+                reject(error);
+            }
+        );
+    });
+}
+
 /* Storage */
 // export const firebaseStorage = getStorage(firebaseApp);
-
 
 /* Add data */
 // async function addProvaGok(data) {

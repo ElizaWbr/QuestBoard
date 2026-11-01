@@ -16,12 +16,17 @@ function checkCurrentUser(user) {
             "uid": user.uid,
             "image": user.photoURL
         };
+        console.log(userData);
         buildUserData(userData);
     }
 }
 
 function buildUserData(userData) {
-    let image = "<img src='" + userData.image + "' alt='User image' class='image-fit'/>"
+    let src = userData.image;
+    if (!src) {
+        src = "../images/no-image-icon-square.png";
+    }
+    let image = "<img src='" + src + "' alt='User image' class='image-fit'/>"
     let name = "<p class='text-center'>" + userData.name + "</p>";
     let email = "<p class='text-center'>" + userData.email + "</p>";
 

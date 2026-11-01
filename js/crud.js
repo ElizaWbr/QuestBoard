@@ -1,45 +1,38 @@
-import { firebaseAuth, firebaseDB } from "./firebase.js";
+import { firebaseAuth, firebaseDB, getAuthUser } from "./firebase.js";
 import { addDoc, setDoc, getDoc, collection, doc, deleteDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
 const eventsDatabaseName = "Quests";
 const acceptedDatabaseName = "Aceppted";
 const createdDatabaseName = "Created";
 
-$(document).ready(function () {
-    addFormActions();
-});
-
-function addFormActions() {
-    $("#manage-save-event").on("click", async function () {
-        await saveData()
-    });
-    $("#manage-delete-event").on("click", async function () {
-        await deleteEvent();
-    });
+export async function getCurrentUserUid() {
+    const authUser = await getAuthUser();
+    if (authUser) {
+        return authUser.uid;
+    }
 }
 
-export function getCurrentUserUid() {
-    return firebaseAuth.currentUser.uid;
-}
-
-export function getCurrentUser() {
-    return firebaseAuth.currentUser;
+export async function getCurrentUser() {
+    const authUser = await getAuthUser();
+    if (authUser) {
+        return authUser;
+    }
 }
 
 /* Names */
 
-export function getQuestDatabaseName(id = "") {
+export async function getQuestDatabaseName(id = "") {
     let name = eventsDatabaseName;
     return getDatabaseName(id, name);
 }
 
-export function getAcceptedDatabaseName(id = "") {
-    let name = "Users/" + getCurrentUserUid() + "/" + acceptedDatabaseName;
+export async function getAcceptedDatabaseName(id = "") {
+    let name = "Users/" + await getCurrentUserUid() + "/" + acceptedDatabaseName;
     return getDatabaseName(id, name);
 }
 
-export function getCreatedDatabaseName(id = "") {
-    let name = "Users/" + getCurrentUserUid() + "/" + createdDatabaseName;
+export async function getCreatedDatabaseName(id = "") {
+    let name = "Users/" + await getCurrentUserUid() + "/" + createdDatabaseName;
     return getDatabaseName(id, name);
 }
 
@@ -50,69 +43,15 @@ function getDatabaseName(id, name) {
     return name;
 }
 
-function setError(error) {
-    $("#event-form-error-message").slideDown();
-    $("#event-form-error-message").text(error);
-}
-
-async function saveData() {
-    let id = $("#event-id").length > 0 ? $("#event-id").val() : "";
-    let author = getCurrentUser();
-
-    let data = {
-        author: author.uid,
-        author_name: author.name,
-        author_email: author.email,
-        name: $("#event-name").val(),
-        description: $("#event-description").val(),
-        date_start: $("#event-date-start").val(),
-        date_end: $("#event-date-end").val(),
-        time_start: $("#event-time-start").val(),
-        time_end: $("#event-time-end").val(),
-        ticket: $("#event-ticket").is(":checked"),
-        ticket_price: $("#event-ticket-price").val(),
-        ticket_url: $("#event-ticket-url").val(),
-        obs: $("#event-obs").val(),
-        color: $("#event-color").val(),
-        image: $("#event-image").val(),
-        members: 1, /* Ownwer */
-        confirmed: 1 /* Ownwer */
-    };
-
-    let error = "";
-    for (const [key, value] of Object.entries(data)) {
-        if (key == "ticket") {
-            continue;
-        }
-        if (!value) {
-            error = "Por favor adicione todas as informações antes de salvar";
-        }
-    }
-
-    if (error) {
-        setError(error);
-        return;
-    }
-
-    $("#event-form-error-message").slideUp();
-
-    if (id == "") {
-        await addEvent(data);
-    } else {
-        await doUpdateEvent(id, data);
-    }
-
-    console.log(data);
-}
-
 /* Quests */
 
-export function getQuestDoc(id) {
-    return doc(firebaseDB, getQuestDatabaseName(id));
+export async function getQuestDoc(id) {
+    let database = await getQuestDatabaseName(id);
+    return doc(firebaseDB, database);
 }
 
 export async function getQuestData(id) {
-    let questRef = getQuestDoc(id);
+    let questRef = await getQuestDoc(id);
     const questSnap = await getDoc(questRef);
 
     if (!questSnap.exists()) {
@@ -125,31 +64,11 @@ export async function getQuestData(id) {
     };
 }
 
-async function addEvent(data) {
-    data.dt = serverTimestamp();
-    data.dtup = serverTimestamp();
-
-    const docRef = await addDoc(collection(firebaseDB, getQuestDatabaseName()), data);
-    console.log("Evento registrado.");
-
-    saveInCreated(docRef.id);
-}
-
-async function doUpdateEvent(id, data) {
-    if (!id) {
-        return;
-    }
-
-    data.dtup = serverTimestamp();
-    let docRef = getQuestDoc(id);
-    await updateDoc(docRef, data);
-
-    console.log("Evento atualizado");
-    return docRef.id;
-}
-
 async function updateConfirmed(id, isAdd = true) {
     let questData = await getQuestData(id);
+    if (isQuestDeleted(questData)) {
+        return;
+    }
     let confirmed = parseInt(questData.confirmed);
     if (isAdd == true) {
         confirmed = confirmed + 1;
@@ -157,68 +76,180 @@ async function updateConfirmed(id, isAdd = true) {
         confirmed = confirmed - 1;
     }
 
-    await doUpdateEvent(id, {
+    await updateEvent(id, {
         confirmed: confirmed
     });
 }
 
 async function updateMembers(id, isAdd = true) {
     let questData = await getQuestData(id);
+    if (isQuestDeleted(questData)) {
+        return;
+    }
+
     let members = parseInt(questData.members);
+
     if (isAdd == true) {
         members = members + 1;
     } else {
         members = members - 1;
     }
 
-    await doUpdateEvent(id, {
+    await updateEvent(id, {
         members: members
     });
 }
 
-async function deleteEvent(id) {
-    const docRef = doc(firebaseDB, getQuestDatabaseName(id));
-    await deleteDoc(docRef);
+/* Event */
+
+export async function addEvent(data) {
+    data.dt = serverTimestamp();
+    data.dtup = serverTimestamp();
+
+    let databaseName = await getQuestDatabaseName();
+    const docRef = await addDoc(collection(firebaseDB, databaseName), data);
+    console.log("Evento registrado.");
+
+    await saveInCreated(docRef.id);
+
+    redirectToManagePageUrl();
+}
+
+export async function updateEvent(id, data) {
+    if (!id) {
+        return;
+    }
+
+    data.dtup = serverTimestamp();
+    let docRef = await getQuestDoc(id);
+
+    console.log(data);
+
+    await updateDoc(docRef, data);
+
+    console.log("Evento atualizado");
+    // reloadPage();
+
+    return docRef.id;
+}
+
+export async function deleteEvent(id) {
+    if (!id) {
+        console.log("Não tem como deletar um evento que não existe");
+        return;
+    }
+    let databaseName = await getQuestDatabaseName(id);
+    const docRef = doc(firebaseDB, databaseName);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) {
+        console.log("Não tem como deletar um evento que não existe");
+        return;
+    }
+
+    let data = snap.data();
+    if (isQuestDeleted(data)) {
+        console.log("Este evento já foi deletado.")
+        return;
+    }
+    await setDoc(docRef, {
+        author: data.author,
+        author_email: data.author_email,
+        author_name: data.author_name,
+        name: data.name,
+        dt: data.dt,
+        dtup: data.dtup,
+        deleted: serverTimestamp(),
+    });
+
+    //await deleteDoc(docRef);
     console.log("Evento deletado.");
 
-    removeFromCreated(docRef.id);
+    await removeFromCreated(docRef.id);
+    reloadPage();
+}
+
+export function getDeletedEventMessage(quest) {
+    let message = "<div class='flex-center-center flex-column less-gap'>";
+    message += "<span>O evento <b>" + quest.name + "</b> foi deletado no dia " + formatDateObject(quest.deleted) + ".</span>";
+    message += "<span>Caso tenha dúvidas entre em contato com <b>" + quest.author_name + "</b>";
+    message += " através do e-mail <b>" + quest.author_email + "</b>. </span>";
+    message += "</div>";
+    return message;
+}
+
+export function displayDeletedEventWarning(quest) {
+    if ($("#no-event-warning-message").length > 0) {
+        let message = getDeletedEventMessage(quest)
+
+        $("#no-event-warning-message").slideDown();
+        $("#no-event-warning-message").html(message);
+    }
+}
+
+export function isQuestDeleted(quest){
+    return typeof quest.deleted != "undefined";
 }
 
 /* Created */
 
-async function saveInCreated(id) {
-    const docRef = doc(firebaseDB, getCreatedDatabaseName(), id);
+export async function saveInCreated(id) {
+    let databaseName = await getCreatedDatabaseName();
+    const docRef = doc(firebaseDB, databaseName, id);
     await setDoc(docRef, { id: id });
 
     return docRef.id;
 }
 
-async function removeFromCreated(id) {
-    const docRef = doc(firebaseDB, getCreatedDatabaseName(id));
+export async function removeFromCreated(id) {
+    let databaseName = await getCreatedDatabaseName(id);
+    const docRef = doc(firebaseDB, databaseName);
     await deleteDoc(docRef);
 }
 
 /* Accept */
 
+async function isCustomerInEvent(id) {
+    let databaseName = await getAcceptedDatabaseName(id);
+    let docRef = doc(firebaseDB, databaseName);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) {
+        return false;
+    }
+    return true;
+}
+
+export async function getCustomerConfirmedInAccepted(id) {
+    let databaseName = await getAcceptedDatabaseName(id);
+    let docRef = doc(firebaseDB, databaseName);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) {
+        return null;
+    }
+    let data = snap.data();
+    return data.confirmed;
+}
+
 export async function saveInAccepted(id) {
-    const docRef = doc(firebaseDB, getAcceptedDatabaseName(), id);
+    let databaseName = await getAcceptedDatabaseName(id);
+    const docRef = doc(firebaseDB, databaseName);
     await setDoc(docRef, {
         id: id,
         confirmed: 0,
         dt: serverTimestamp()
     });
 
-    updateMembers(id, true);
+    await updateMembers(id, true);
 
     return docRef.id;
 }
 
-async function confirmInAccepted(id) {
+export async function confirmInAccepted(id) {
     if (!id) {
         return;
     }
 
-    let docRef = doc(firebaseDB, getAcceptedDatabaseName(id));
+    let databaseName = await getAcceptedDatabaseName(id);
+    let docRef = doc(firebaseDB, databaseName);
     await updateDoc(docRef, {
         confirmed: serverTimestamp()
     });
@@ -228,12 +259,81 @@ async function confirmInAccepted(id) {
     return docRef.id;
 }
 
-async function removeFromAccepted(id) {
-    const docRef = doc(firebaseDB, getAcceptedDatabaseName(id));
-    if (docRef.confirmed) {
-        await updateConfirmed(id, false);
+export async function removeFromAccepted(id) {
+    try {
+        let databaseName = await getAcceptedDatabaseName(id);
+        const docRef = doc(firebaseDB, databaseName);
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+            let data = snap.data();
+            if (data.confirmed != 0) {
+                await updateConfirmed(id, false);
+            }
+        }
+
+        updateMembers(id, false);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error("Erro ao remover evento:", error);
     }
-    updateMembers(id, false);
-    await deleteDoc(docRef);
 }
 
+
+export async function validateQuestInUser(quest) {
+    let currentUser = await getCurrentUserUid();
+    if (currentUser == quest.author) {
+        return true;
+    }
+
+    let id = quest.id;
+    return await isCustomerInEvent(id);
+}
+
+
+/* Format */
+
+export function formatDate(date) {
+    if (!date) {
+        return "";
+    }
+    return date.split("-").reverse().join("/");
+}
+
+export function formatDateObject(date) {
+    let toDate = date.toDate();
+    return toDate.toLocaleString("pt-BR");
+}
+
+/* Redirect */
+
+export function reloadPage() {
+    window.location.reload();
+}
+
+export function redirectToManagePageUrl(id = "") {
+    return window.location.href = getManagePageUrl(id);
+}
+
+export function getManagePageUrl(id = "") {
+    let page = "manage.php";
+    if (id) {
+        page += "?id=" + id;
+    }
+    return page;
+}
+
+export function redirectToEventPageUrl(id = "") {
+    return window.location.href = getEventPageUrl(id);
+}
+
+export function getEventPageUrl(id) {
+    if (!id) {
+        return "events.php";
+    }
+    return "event.php?id=" + id;
+}
+
+export function getEnterQuestPageUrl() {
+    let page = "accept.php";
+    return page;
+}

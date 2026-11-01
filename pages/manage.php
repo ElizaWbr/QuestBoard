@@ -43,7 +43,7 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 			</div>
 		</div>
 		<form class="event-form" method="post">
-			<div class="container-round-medium first">
+			<div class="container-round-medium">
 				<div class="container-round-light">
 					<div class="input-field">
 						<label for="event-name">Nome do evento</label>
@@ -53,6 +53,18 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 						<label for="event-description">Descrição</label>
 						<textarea id="event-description" name="event_description"></textarea>
 					</div>
+					<div class="input-field">
+						<label for="event-contact-email">E-mail para contato</label>
+						<input type="email" id="event-contact-email" name="event_contact_email" />
+					</div>
+					<div class="input-field">
+						<label for="event-contact-phone">phone para contato</label>
+						<input type="phone" id="event-contact-phone" name="event_contact_phone" />
+					</div>
+				</div>
+			</div>
+			<div class="container-round-medium">
+				<div class="container-round-light">
 					<div class="input-field">
 						<label for="event-date-start">Data inicial</label>
 						<input type="date" id="event-date-start" name="event_date_start" />
@@ -68,6 +80,10 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 					<div class="input-field">
 						<label for="event-time-end">Horário final</label>
 						<input type="time" id="event-time-end" name="event_time_end" />
+					</div>
+					<div class="input-field">
+						<label for="event-location">Local do Evento</label>
+						<textarea id="event-location" name="event_location"></textarea>
 					</div>
 				</div>
 			</div>
@@ -108,10 +124,10 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 				</div>
 			</div>
 
-			<div id="event-submit-delete" class="container-round-medium flex-center-center flex-column">
+			<div id="event-submit-delete" class="container-round-medium no-margin flex-center-center flex-column">
 				<div class="flex-center-center">
 					<?php if ($id) { ?>
-						<button id="manage-delete-event" class="btn text-icon red color-white">
+						<button type="button" id="manage-delete-event" class="btn text-icon red color-white">
 							<img src="../images/icons/delete.svg" alt="Delete" class="icon medium" />
 							Excluir
 						</button>
@@ -123,6 +139,21 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 					</button>
 				</div>
 				<p id="event-form-error-message" class="color-red" style="display: none;"></p>
+				<div id="manage-delete-event-confirmation-container" style="display: none;" class="card flex-center-center flex-column less-gap margin-top">
+					<span>Você tem certeza que deseja DELETAR este Evento?</span>
+					<span>Caso mude de ideia NÃO será possível recupera-lo.</span>
+					<span>Todos os membros serão avisados que o evento não está mais disponível.</span>
+					<div class="card flex-center-center no-margin">
+					<button type="button" id="manage-delete-event-confirm" class="btn text-icon red color-white only-margin-top force-half">
+						<img src="../images/icons/delete.svg" alt="Confirm delete event" class="icon medium" />
+						Confirmar a remoção completa deste evento
+					</button>
+					<button type="button" id="manage-delete-event-cancel" class="btn text-icon green color-white only-margin-top force-half">
+						<img src="../images/icons/check-circle.svg" alt="Cancel delete event" class="icon medium" />
+						Cancelar
+					</button>
+					</div>
+				</div>
 			</div>
 		</form>
 

@@ -23,6 +23,10 @@
     border-radius: 15px;
 }
 
+.image-fit.border {
+    border: 5px solid #de7a57;
+}
+
 .background-main {
     margin: 0;
     height: 100vh;
@@ -31,7 +35,6 @@
 }
 
 .body-content {
-    background-color: red;
     padding: 50px 35px;
     height: calc(100vh - 150px);
     /* total - (2 * padding + topbar height) */
@@ -41,6 +44,10 @@
 .full-screen {
     height: 100vh;
     width: 100vw;
+}
+
+.force-half{
+    width: 50%;
 }
 
 .hide {
@@ -59,6 +66,17 @@
     width: 60px;
 }
 
+.icon.round {
+    background-color: #f9e6d7;
+    border-radius: 50px;
+}
+
+.icon.round-transparent {
+    background-color: transparent;
+    border-radius: 50px;
+}
+
+
 /* Buttons */
 
 .btn {
@@ -73,6 +91,11 @@
     background-color: #f09d80;
 }
 
+a.btn {
+    color: white;
+    text-decoration: none;
+}
+
 a.btn:hover {
     background-color: #f09d80;
 }
@@ -81,6 +104,7 @@ a.btn:active {
     background-color: #f09d80;
 }
 
+.btn.round-transparent,
 .btn.round {
     height: 40px;
     width: 40px;
@@ -90,6 +114,13 @@ a.btn:active {
     align-items: center;
 }
 
+.btn-round-filler {
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+}
+
+.btn.text,
 .btn.text-icon {
     padding: .5rem 1rem;
     border-radius: 15px;
@@ -97,6 +128,12 @@ a.btn:active {
     align-items: center;
     justify-content: center;
     gap: 1rem;
+}
+
+.btn:disabled{
+    background: #d9bcb2;
+    color: #939393;
+    cursor: auto;
 }
 
 /* Borders */
@@ -111,6 +148,12 @@ a.btn:active {
     align-items: center;
     justify-content: center;
     gap: 1rem;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .flex-column {
@@ -144,10 +187,65 @@ a.btn:active {
 }
 
 /* Divider */
-.divider{
+.divider {
     border-bottom: 1px solid #f6d0b3;
     width: 100%;
     margin: 1rem 0;
+}
+
+/* Padding */
+.padding {
+    padding: 1rem;
+}
+
+/* Margin */
+.margin {
+    margin: 1rem;
+}
+
+.half-margin {
+    margin: .5rem;
+}
+
+.no-margin{
+    margin: 0;
+}
+
+.margin-top{
+    margin-top: 1rem;
+}
+
+.no-margin-top{
+    margin-top: 0;
+}
+
+.margin-bottom{
+    margin-bottom: 1rem;
+}
+
+.only-margin-top{
+    margin-top: .5rem;
+    margin-bottom: 0;
+}
+
+/* Card */
+.card {
+    width: fit-content;
+    padding: 1rem;
+    border-radius: 15px;
+    background-color: #f9e6d7;
+}
+
+.card:not(.no-margin){
+    margin: 1rem;
+}
+
+.card h3{
+    margin-top: 0;
+}
+
+.details{
+    font-size: 14px;
 }
 
 /* Small screens */
