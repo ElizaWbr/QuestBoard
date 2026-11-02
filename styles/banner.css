@@ -64,20 +64,33 @@
     height: 100%;
     width: 70px;
     clip-path: polygon(round 2px, 0 0, 100% 0, 70% 50%, 100% 100%, 0 100%);
-    
 }
 
-/* Height limiter */
-
-.banner-title-height-limiter {
-    
+/* Two sides simple banner */
+.two-sides-simple-banner{
+    padding: .5rem 2.5rem;
+    width: stretch;
+    max-width: 500px;
+    background-color: #de7a57;
+    color: #fff;
+    text-align: left;
+    text-decoration: none;
+    clip-path: polygon(round 2px, 0 0, 100% 0, 93% 50%, 100% 100%, 0 100%, 7% 50%);
 }
 
+.two-sides-banner-title{
+    text-align: center;
+    margin: 0;
+}
 
 /* Big screens */
 
 @media only screen and (min-width: 600px) {
     .two-sides-banner .banner-top h2{
+        font-size: x-large;
+    }
+
+    .two-sides-banner-title{
         font-size: x-large;
     }
 }

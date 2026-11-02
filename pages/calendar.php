@@ -34,16 +34,13 @@ $quest_board_page_id = "calendar";
 						aria-label="Mês anterior">
 						<img src="../images/icons/chevron-left.svg" alt="Sidenav open icon" class="icon medium" />
 					</button>
-					<h2 id="calendar-title" class="dark-card no-margin">-</h2>
+					<div class="flex-center-center flex-column less-gap">
+						<h2 id="calendar-title-day" class="dark-card no-margin flex-fit-card">-</h2>
+						<h2 id="calendar-title-month" class="dark-card no-margin flex-fit-card btn">-</h2>
+					</div>
 					<button id="calendar-next" type="button" class="btn round flex-center-center"
 						aria-label="Próximo mês">
 						<img src="../images/icons/chevron-right.svg" alt="Sidenav open icon" class="icon medium" />
-					</button>
-					<button id="calendar-day-view-button" type="button">
-						Dia
-					</button>
-					<button id="calendar-month-view-button" type="button">
-						Mes
 					</button>
 				</div>
 			</div>

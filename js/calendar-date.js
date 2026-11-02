@@ -1,6 +1,7 @@
 import { setSelectedDate, setCurrentDate, getSelectedDate, getCalendarEvents, getCalendarEventsStartDate, getCalendarEventsEndDate } from "./calendar.js";
 import { formatCalendarDate, setCalendarTitle } from "./calendar.js";
-import { formatDateObject } from "./crud.js";
+import { loadCalendarEvents } from "./calendar-month.js";
+import { redirectToAcceptedOrCreatedEvent } from "./crud.js";
 
 const eventsContainer = "calendar-day-events";
 
@@ -23,10 +24,10 @@ export function showDayCalendar() {
 
 function renderDayCalendarHtml() {
     let selected = getSelectedDate();
-    let title = selected.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    let titleDay = selected.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric" });
+    let titleMonth = selected.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
 
-    setCalendarTitle(title);
-
+    setCalendarTitle(titleDay, titleMonth);
     renderCalendarHours();
 
     $("#" + eventsContainer).empty();
@@ -62,7 +63,9 @@ function renderDayCalendarHtml() {
         $("#" + eventsContainer).append(eventHtml);
 
         $("#" + dayEventId).on("click", function () {
-            console.log("Evento selecionado:", quest);
+            redirectToAcceptedOrCreatedEvent(quest.id, quest.author);
+
+            // console.log("Evento selecionado:", quest);
         });
     });
 }

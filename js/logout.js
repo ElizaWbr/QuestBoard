@@ -2,10 +2,8 @@ import { firebaseAuth } from "./firebase.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 $(document).ready(function () {
-    const logoutButton = $("#firebase-logout");
-
     /* Logout */
-    $(logoutButton).on("click", async () => {
+    $("#firebase-logout").on("click", async () => {
         doLogout();
     });
 });

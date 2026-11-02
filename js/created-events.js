@@ -153,29 +153,29 @@ function buildQuestHtml(quest, type, container) {
 
     if (isSameDay) {
         html += "<p class='event-date'>";
-        html += "<img src='../images/icons/calendar-start.svg' alt='Calendar date' class='icon medium round-transparent' />";
+        html += "<img src='../images/icons/dark-calendar-start.svg' alt='Calendar date' class='icon medium round-transparent' />";
         html += date_start;
         html += "</p>";
 
         html += "<p class='event-start'>";
-        html += "<img src='../images/icons/clock.svg' alt='Time' class='icon medium round-transparent' />";
+        html += "<img src='../images/icons/dark-clock.svg' alt='Time' class='icon medium round-transparent' />";
         html += "Das " + quest.time_start + " até " + quest.time_end;
         html += "</p>";
 
     } else {
         html += "<p class='event-start'>";
-        html += "<img src='../images/icons/calendar-start.svg' alt='Calendar start' class='icon medium round-transparent' />";
+        html += "<img src='../images/icons/dark-calendar-start.svg' alt='Calendar start' class='icon medium round-transparent' />";
         html += "Início: " + date_start + " - " + quest.time_start;
         html += "</p>";
 
         html += "<p class='event-end'>";
-        html += "<img src='../images/icons/calendar-end.svg' alt='Calendar end' class='icon medium round-transparent' />";
+        html += "<img src='../images/icons/dark-calendar-end.svg' alt='Calendar end' class='icon medium round-transparent' />";
         html += "Fim: " + date_end + " - " + quest.time_end;
         html += "</p>";
     }
 
     html += "<p class='event-location'>";
-    html += "<img src='../images/icons/location.svg' alt='Location' class='icon medium round-transparent' />";
+    html += "<img src='../images/icons/dark-location.svg' alt='Location' class='icon medium round-transparent' />";
     html += "Local: " + quest.location;
     html += "</p>";
 

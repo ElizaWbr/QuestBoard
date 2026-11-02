@@ -7,6 +7,8 @@ import { prevMonth, nextMonth } from "./calendar-month.js";
 import { prevDate, nextDate } from "./calendar-date.js";
 
 const calendarTitle = "calendar-title";
+const calendarTitleDay = "calendar-title-day";
+const calendarTitleMonth = "calendar-title-month";
 
 let selectedDate = null;
 let calendarEvents = [];
@@ -80,8 +82,15 @@ export async function getCurrentUserAllEvents(startDate, endDate) {
     }
 }
 
-export function setCalendarTitle(title) {
-    $("#" + calendarTitle).text(title);
+export function setCalendarTitle(titleDay, titleMonth) {
+    if (titleDay) {
+        $("#" + calendarTitleDay).text(titleDay);
+        $("#" + calendarTitleDay).slideDown();
+    } else {
+        $("#" + calendarTitleDay).slideUp();
+    }
+    titleMonth = titleMonth.replace(/\sde\s/i, ' ');
+    $("#" + calendarTitleMonth).text(titleMonth);
 }
 
 /* YYYY-MM-DD */

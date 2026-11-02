@@ -60,11 +60,11 @@ $banner_title = "Evento";
                     <span id="event-created-author-name" class="margin-top"></span>
                     <span id="event-created-date"></span>
                     <div class='flex-center-center less-gap'>
-                        <img src='../images/icons/account.svg' alt='Membros' class='icon medium round-transparent' />
+                        <img src='../images/icons/dark-account.svg' alt='Membros' class='icon medium round-transparent' />
                         <span id="event-members-counter"></span>
                     </div>
                     <div class='flex-center-center less-gap'>
-                        <img src='../images/icons/check-circle.svg' alt='Confirmados'
+                        <img src='../images/icons/dark-check-circle.svg' alt='Confirmados'
                             class='icon medium round-transparent' />
                         <span id="event-confirmed-counter"></span>
                     </div>

@@ -344,6 +344,11 @@ export function redirectToEventPageUrl(id = "") {
     return window.location.href = getEventPageUrl(id);
 }
 
+export async function redirectToAcceptedOrCreatedEvent(id, author) {
+    let url = await getAcceptedOrCreatedEventUrl(id, author);
+    return window.location.href = url;
+}
+
 export function getEventPageUrl(id) {
     if (!id) {
         return "events.php";
@@ -354,4 +359,13 @@ export function getEventPageUrl(id) {
 export function getEnterQuestPageUrl() {
     let page = "accept.php";
     return page;
+}
+
+export async function getAcceptedOrCreatedEventUrl(id, author) {
+    let currentUser = await getCurrentUserUid();
+    if (author == currentUser) {
+        return getManagePageUrl(id);
+    } else {
+        return getEventPageUrl(id);
+    }
 }

@@ -11,7 +11,7 @@ const today = new Date();
 $(document).ready(async function () {
     /* Change to month view */
     await showMonthCalendar();
-    $("#calendar-month-view-button").on("click", async function () {
+    $("#calendar-title-month").on("click", async function () {
         await showMonthCalendar();
     });
 });
@@ -44,15 +44,14 @@ async function buildCalendar() {
     let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
     setCurrentDate(currentDate);
     await loadCalendarEvents();
+    renderCalendarHtml();
 }
 
-async function loadCalendarEvents() {
+export async function loadCalendarEvents() {
     let { startDate, endDate } = getCalendarDateRange();
     setCalendarEventsStartDate(formatCalendarDate(startDate));
     setCalendarEventsEndDate(formatCalendarDate(endDate));
-
     setCalendarEvents(await getCurrentUserAllEvents(startDate, endDate));
-    renderCalendarHtml();
 }
 
 function renderCalendarHtml() {
@@ -62,7 +61,7 @@ function renderCalendarHtml() {
 
     /* Month name and year */
     let newCalendarTitle = currentDate.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
-    setCalendarTitle(newCalendarTitle);
+    setCalendarTitle("", newCalendarTitle);
     $("#" + calendarDays).empty();
 
     /* First and last month dates */
