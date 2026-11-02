@@ -75,6 +75,7 @@ export async function getCurrentUserAllEvents(startDate, endDate) {
             }
             return a.time_start.localeCompare(b.time_start);
         });
+
         return events;
     } catch (error) {
         console.error("Erro ao buscar eventos do calendário:", error);

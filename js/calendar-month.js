@@ -2,6 +2,7 @@ import { getCurrentUserAllEvents, formatCalendarDate, setCalendarTitle } from ".
 import { getSelectedDate, getCurrentDate, getCalendarEvents } from "./calendar.js";
 import { setSelectedDate, setCurrentDate, setCalendarEvents, setCalendarEventsStartDate, setCalendarEventsEndDate } from "./calendar.js";
 import { showDayCalendar } from "./calendar-date.js";
+import { ableLoader, disableLoader } from "./loader.js";
 
 const calendarMonth = "calendar-month";
 const calendarDays = "calendar-days";
@@ -40,14 +41,23 @@ export function nextMonth() {
 }
 
 async function buildCalendar() {
-    setSelectedDate(new Date(today));
-    let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
-    setCurrentDate(currentDate);
+    let selectedData = getSelectedDate();
+    if (!selectedData) {
+        setSelectedDate(new Date(today));
+    }
+    let currentDate = getCurrentDate();
+    if (!currentDate) {
+        currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+        setCurrentDate(currentDate);
+    }
     await loadCalendarEvents();
     renderCalendarHtml();
+    disableLoader();
 }
 
 export async function loadCalendarEvents() {
+    ableLoader();
+
     let { startDate, endDate } = getCalendarDateRange();
     setCalendarEventsStartDate(formatCalendarDate(startDate));
     setCalendarEventsEndDate(formatCalendarDate(endDate));

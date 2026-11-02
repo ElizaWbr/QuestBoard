@@ -2,6 +2,7 @@ import { setSelectedDate, setCurrentDate, getSelectedDate, getCalendarEvents, ge
 import { formatCalendarDate, setCalendarTitle } from "./calendar.js";
 import { loadCalendarEvents } from "./calendar-month.js";
 import { redirectToAcceptedOrCreatedEvent } from "./crud.js";
+import { disableLoader } from "./loader.js";
 
 const eventsContainer = "calendar-day-events";
 
@@ -188,6 +189,7 @@ async function navigateDay(amount) {
     /* Check if selected date is outside loaded range */
     if (selected < getCalendarEventsStartDate() || selected > getCalendarEventsEndDate()) {
         await loadCalendarEvents();
+        disableLoader();
     }
 
     renderDayCalendarHtml();

@@ -12,8 +12,6 @@ $(document).ready(async function () {
     await buildCurrentUserAllQuests();
     await buildCurrentUserCreatedEvents();
     await buildCurrentUserAcceptedEvents();
-
-    disableLoader();
 });
 
 async function buildCurrentUserAllQuests() {
@@ -30,6 +28,8 @@ async function buildCurrentUserAllQuests() {
             html += getNoAddedHtml();
             $("#" + allQuestsContainerId).append(html);
         }
+
+        disableLoader();
     }
 }
 
@@ -45,6 +45,7 @@ async function buildCurrentUserCreatedEvents() {
             let html = getNoCreatedHtml();
             $("#" + createdContainerId).append(html);
         }
+        disableLoader();
     }
 }
 
@@ -63,6 +64,7 @@ async function buildCurrentUserAcceptedEvents() {
             let html = getNoAddedHtml();
             $("#" + acceptedContainerId).append(html);
         }
+        disableLoader();
     }
 }
 
