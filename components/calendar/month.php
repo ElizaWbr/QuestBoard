@@ -1,5 +1,4 @@
-<div id="calendar-month" class="calendar-month">
-
+<div id="calendar-month-view" style="display: none;">
     <div class="calendar-weekdays">
         <div>D</div>
         <div>S</div>

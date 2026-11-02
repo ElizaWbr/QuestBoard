@@ -1,52 +1,68 @@
-import { getCurrentUserAllEvents } from "./calendar.js";
+import { getCurrentUserAllEvents, formatCalendarDate, setCalendarTitle } from "./calendar.js";
+import { getSelectedDate, getCurrentDate, getCalendarEvents } from "./calendar.js";
+import { setSelectedDate, setCurrentDate, setCalendarEvents, setCalendarEventsStartDate, setCalendarEventsEndDate } from "./calendar.js";
+import { showDayCalendar } from "./calendar-date.js";
 
-const calendarTitle = "calendar-title";
 const calendarMonth = "calendar-month";
 const calendarDays = "calendar-days";
 
 const today = new Date();
 
-let selectedDate = null;
-let currentDate = null;
-let calendarEvents = [];
-
 $(document).ready(async function () {
-    await buildCalendar();
+    /* Change to month view */
+    await showMonthCalendar();
+    $("#calendar-month-view-button").on("click", async function () {
+        await showMonthCalendar();
+    });
 });
 
+async function showMonthCalendar() {
+    $("#calendar-day-view").hide();
+    $("#calendar-month-view").show();
+
+    await buildCalendar();
+}
+
+export function prevMonth() {
+    let currentDate = getCurrentDate();
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    setCurrentDate(currentDate);
+
+    renderCalendarHtml();
+}
+
+export function nextMonth() {
+    let currentDate = getCurrentDate();
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    setCurrentDate(currentDate);
+
+    renderCalendarHtml();
+}
+
 async function buildCalendar() {
-    selectedDate = new Date(today);
-    currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
-
-    /* Prev month */
-    $("#calendar-prev").on("click", function () {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendarHtml();
-    });
-
-    /* Next month */
-    $("#calendar-next").on("click", function () {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendarHtml();
-    });
-
+    setSelectedDate(new Date(today));
+    let currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+    setCurrentDate(currentDate);
     await loadCalendarEvents();
 }
 
 async function loadCalendarEvents() {
     let { startDate, endDate } = getCalendarDateRange();
-    calendarEvents = await getCurrentUserAllEvents(startDate, endDate);
+    setCalendarEventsStartDate(formatCalendarDate(startDate));
+    setCalendarEventsEndDate(formatCalendarDate(endDate));
 
+    setCalendarEvents(await getCurrentUserAllEvents(startDate, endDate));
     renderCalendarHtml();
 }
 
 function renderCalendarHtml() {
+    let currentDate = getCurrentDate();
     let year = currentDate.getFullYear();
     let month = currentDate.getMonth();
 
     /* Month name and year */
     let newCalendarTitle = currentDate.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
-    $("#" + calendarTitle).text(newCalendarTitle);
+    setCalendarTitle(newCalendarTitle);
     $("#" + calendarDays).empty();
 
     /* First and last month dates */
@@ -89,7 +105,8 @@ function renderCalendarHtml() {
         }
 
         /* Selected date */
-        if (sameDate(date, selectedDate)) {
+        let selected = getSelectedDate();
+        if (sameDate(date, selected)) {
             dayClass += " selected";
         }
 
@@ -103,22 +120,22 @@ function renderCalendarHtml() {
         let eventsContainer = $("#calendar-date-" + i + " .calendar-events");
         renderCalendarEvents(date, eventsContainer);
 
-        /* Date click */
         $("#calendar-date-" + i).on("click", function () {
-            selectedDate = new Date(date);
-            currentDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            renderCalendarHtml();
+            setSelectedDate(new Date(date));
+            let currentDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            setCurrentDate(currentDate);
 
-            console.log("Data selecionada:", formatDate(selectedDate));
+            showDayCalendar();
         });
+
     }
 }
 
 function renderCalendarEvents(date, container) {
-    let currentDate = formatDate(date);
-
-    let dayEvents = calendarEvents.filter(event => {
-        return currentDate >= event.date_start && currentDate <= event.date_end;
+    let formattedDate = formatCalendarDate(date);
+    let events = getCalendarEvents();
+    let dayEvents = events.filter(event => {
+        return formattedDate >= event.date_start && formattedDate <= event.date_end;
     });
 
     dayEvents.forEach(event => {
@@ -130,6 +147,7 @@ function renderCalendarEvents(date, container) {
 }
 
 function getCalendarDateRange() {
+    let currentDate = getCurrentDate();
     let year = currentDate.getFullYear();
     let month = currentDate.getMonth();
 
@@ -142,16 +160,7 @@ function getCalendarDateRange() {
     return { startDate, endDate };
 }
 
-/* YYYY-MM-DD */
-function formatDate(date) {
-    let year = date.getFullYear();
-    let month = String(date.getMonth() + 1).padStart(2, "0");
-    let day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-}
-
 function sameDate(date1, date2) {
-    return formatDate(date1) === formatDate(date2);
+    return formatCalendarDate(date1) === formatCalendarDate(date2);
 }
 
