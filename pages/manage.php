@@ -142,7 +142,7 @@ $banner_title = $id ? "Editar Evento" : "Adicionar Evento";
 					</button>
 				</div>
 				<p id="event-form-error-message" class="color-red" style="display: none;"></p>
-				<div id="manage-delete-event-confirmation-container" style="display: none;" class="card flex-center-center flex-column less-gap margin-top">
+				<div id="manage-delete-event-confirmation-container" style="display: none;" class="container-remove card flex-center-center flex-column less-gap margin-top">
 					<span>Você tem certeza que deseja DELETAR este Evento?</span>
 					<span>Caso mude de ideia NÃO será possível recupera-lo.</span>
 					<span>Todos os membros serão avisados que o evento não está mais disponível.</span>

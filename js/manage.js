@@ -1,11 +1,14 @@
 import { addEvent, updateEvent, deleteEvent, getCurrentUser, redirectToEventPageUrl, isQuestDeleted } from "./crud.js";
 import { getQuestData, formatDateObject } from "./crud.js";
+import { disableLoader } from "./loader.js";
 
 
 $(document).ready(async function () {
     addTicketController();
     addFormActions();
     await setSavedData();
+
+    disableLoader();
 });
 
 function addTicketController() {

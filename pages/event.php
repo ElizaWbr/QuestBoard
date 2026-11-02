@@ -78,7 +78,7 @@ $banner_title = "Evento";
                             Confirmar presença
                         </button>
                     </div>
-                    <div id="remove-event-confirmation-container" style="display: none;" class="card flex-center-center flex-column less-gap margin-top">
+                    <div id="remove-event-confirmation-container" style="display: none;" class="container-remove card flex-center-center flex-column less-gap margin-top">
                         <span>Você tem certeza que deseja sair deste Evento?</span>
                         <span>Caso mude de ideia precisará do id para entrar novamente.</span>
                         <div class="flex-center-center no-margin">

@@ -11,3 +11,5 @@
 <!-- Enqueue navs scripts -->
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script type="module" src="../js/sidenav.js"></script>
+
+<?php include_once "../components/loader.php"; ?>

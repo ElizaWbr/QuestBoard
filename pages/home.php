@@ -24,7 +24,6 @@ $simple_banner_title = "Neste mês";
 
 <body class="background-main">
     <?php include_once "../components/pages-init.php"; ?>
-
     <!-- Content -->
     <div class="body-content">
         <div>

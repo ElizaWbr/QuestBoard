@@ -1,6 +1,7 @@
 import { firebaseDB } from "./firebase.js";
 import { getQuestDatabaseName, getAcceptedDatabaseName, getCreatedDatabaseName, formatDate, getManagePageUrl, getEnterQuestPageUrl, removeFromAccepted, getDeletedEventMessage, isQuestDeleted, getCurrentUserUid } from "./crud.js";
 import { collection, getDocs, query, where, documentId } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { disableLoader } from "./loader.js";
 
 const allQuestsContainerId = "all-quests-container";
 const createdContainerId = "created-quests-container";
@@ -11,6 +12,8 @@ $(document).ready(async function () {
     await buildCurrentUserAllQuests();
     await buildCurrentUserCreatedEvents();
     await buildCurrentUserAcceptedEvents();
+
+    disableLoader();
 });
 
 async function buildCurrentUserAllQuests() {

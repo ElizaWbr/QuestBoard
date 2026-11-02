@@ -1,6 +1,7 @@
 import { firebaseDB } from "./firebase.js";
 import { getQuestData, saveInAccepted, getCurrentUserUid, getAcceptedDatabaseName, redirectToEventPageUrl, isQuestDeleted } from "./crud.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { disableLoader, ableComponentLoader, disableComponentLoader } from "./loader.js";
 
 $(document).ready(async function () {
     addAcceptAction();
@@ -8,11 +9,14 @@ $(document).ready(async function () {
 
 function addAcceptAction() {
     $("#enter-event").on("click", async function () {
+        ableComponentLoader("accept-event-form-container");
         await checkQuest();
+        disableComponentLoader("accept-event-form-container");
     });
     $("#accept-valid-event").on("click", async function () {
         await acceptQuest();
     });
+    disableLoader();
 }
 
 async function getValidQuest() {

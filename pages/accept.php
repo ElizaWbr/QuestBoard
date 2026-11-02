@@ -30,27 +30,29 @@ $banner_title = "Entrar em Evento";
 		<div>
 			<?php include_once "../components/two-sides-banner.php"; ?>
 		</div>
-		<form class="accept-event-form" method="post">
-			<div class="container-round-medium">
+		<div id="accept-event-form">
+			<div id="accept-event-form-container" class="container-round-medium">
 				<div class="container-round-light">
 					<div class="input-field">
 						<label for="accept-event-id">Id do evento</label>
 						<input type="text" id="accept-event-id" name="event_id" />
 					</div>
 					<div class="flex-center-center">
-						<button type="button" id="enter-event" name="enter_event" class="btn text-icon green color-white">
+						<button type="button" id="enter-event" name="enter_event"
+							class="btn text-icon green color-white">
 							<img src="../images/icons/magnify.svg" alt="Enter" class="icon medium" />
 							Procurar
 						</button>
 					</div>
 				</div>
 			</div>
-		</form>
+		</div>
 		<div id="event-summary-content" style="display: none;">
 			<div class="container-round-medium flex-center-center flex-column less-gap">
 				<div id="ivalid-event-warning" style="display: none;"></div>
-				<div id="accept-valid-event-data" class="card flex-center-center flex-column less-gap" style="display: none;">
-					<h3 id="event-name"></h3>
+				<div id="accept-valid-event-data" class="card flex-center-center flex-column less-gap"
+					style="display: none;">
+					<h3 id="event-name">-</h3>
 					<span id="event-description"></span>
 					<span id="manage-event-user-name"></span>
 					<div class="divider"></div>
@@ -60,7 +62,8 @@ $banner_title = "Entrar em Evento";
 					<span id="manage-event-confirmed-counter" class="details"></span>
 
 					<div class="flex-center-center margin-top">
-						<button type="button" id="accept-valid-event" name="accept_valid_event" class="btn text-icon green color-white">
+						<button type="button" id="accept-valid-event" name="accept_valid_event"
+							class="btn text-icon green color-white">
 							<img src="../images/icons/check-circle.svg" alt="Enter" class="icon medium" />
 							Entrar
 						</button>

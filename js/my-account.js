@@ -1,10 +1,12 @@
 import { firebaseAuth } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import { disableLoader } from "./loader.js";
 
 $(document).ready(function () {
     /* Auth state */
     onAuthStateChanged(firebaseAuth, (user) => {
         checkCurrentUser(user);
+        disableLoader();
     });
 });
 

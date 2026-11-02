@@ -1,10 +1,13 @@
 import { formatCalendarDate } from "./calendar.js";
 import { getCurrentUserAcceptedEvents, getCurrentUserCreatedEvents } from "./created-events.js";
 import { formatDate, getAcceptedOrCreatedEventUrl } from "./crud.js";
+import { disableLoader } from "./loader.js";
 
 $(document).ready(async function () {
     await buildNextEvent();
     await buildMonthEvents();
+
+    disableLoader();
 });
 
 async function buildNextEvent() {

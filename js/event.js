@@ -1,7 +1,10 @@
 import { getQuestData, formatDateObject, formatDate, getCustomerConfirmedInAccepted, confirmInAccepted, reloadPage, removeFromAccepted, redirectToEventPageUrl, validateQuestInUser, isQuestDeleted, displayDeletedEventWarning, isCurrentUserAuthor } from "./crud.js";
+import { disableLoader } from "./loader.js";
 
 $(document).ready(async function () {
     await setSavedData();
+
+    disableLoader();
 });
 
 async function setSavedData() {

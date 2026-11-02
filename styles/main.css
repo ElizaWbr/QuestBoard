@@ -172,7 +172,6 @@ a.btn:active {
     gap: 0;
 }
 
-
 .text-center {
     text-align: center;
 }
@@ -294,6 +293,11 @@ a.btn:active {
 
 .details {
     font-size: 14px;
+}
+
+/* Container remove */
+.container-remove{
+    width: calc(100% + 2.5rem);
 }
 
 /* Small screens */
