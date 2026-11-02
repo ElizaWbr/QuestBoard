@@ -1,0 +1,309 @@
+/* Site icon */
+.the-site-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transform: rotate(45deg);
+    height: 60px;
+    width: 60px;
+    background-color: #de7a57;
+    border-radius: 15px;
+    position: absolute;
+}
+
+.the-site-icon img {
+    transform: rotate(-45deg);
+}
+
+.image-fit {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.image-fit.border {
+    border: 5px solid #de7a57;
+}
+
+.background-main {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f9f7f1;
+}
+
+.body-content {
+    padding: 50px 35px;
+    height: calc(100vh - 150px);
+    /* total - (2 * padding + topbar height) */
+    overflow: auto;
+}
+
+.full-screen {
+    height: 100vh;
+    width: 100vw;
+}
+
+.body-content .full-width{
+    width: calc(100% - 2rem);
+}
+
+.force-half {
+    width: 50%;
+}
+
+.hide {
+    display: none !important;
+}
+
+/* Icons */
+
+.icon.medium {
+    height: 30px;
+    width: 30px;
+}
+
+.icon.big {
+    height: 60px;
+    width: 60px;
+}
+
+.icon.round {
+    background-color: #f9e6d7;
+    border-radius: 50px;
+}
+
+.icon.round-transparent {
+    background-color: transparent;
+    border-radius: 50px;
+}
+
+
+/* Buttons */
+
+.btn {
+    border: 0;
+    background-color: #de7a57;
+    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+    /* Duração e tipo de curva */
+}
+
+.btn:hover {
+    background-color: #f09d80;
+}
+
+a.btn {
+    color: white;
+    text-decoration: none;
+}
+
+a.btn:hover {
+    background-color: #f09d80;
+}
+
+a.btn:active {
+    background-color: #f09d80;
+}
+
+.btn.round-transparent,
+.btn.round {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-round-filler {
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+}
+
+.btn.text,
+.btn.text-icon {
+    padding: .5rem 1rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn:disabled {
+    background: #d9bcb2;
+    color: #939393;
+    cursor: auto;
+}
+
+/* Borders */
+.border-radius {
+    border-radius: 15px;
+}
+
+/* Display flex helpers */
+
+.flex-center-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.less-gap {
+    gap: .2rem;
+}
+
+.no-gap {
+    gap: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Colors */
+
+.color-white {
+    color: #fff;
+}
+
+.color-red {
+    color: #d32f2f !important;
+}
+
+.red {
+    background-color: #d32f2f !important;
+}
+
+.green {
+    background-color: #388e3c !important;
+}
+
+/* Divider */
+.divider {
+    border-bottom: 1px solid #f6d0b3;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+/* Padding */
+.padding {
+    padding: 1rem;
+}
+
+.half-padding {
+    padding: .5rem;
+}
+
+/* Margin */
+.margin {
+    margin: 1rem;
+}
+
+.half-margin {
+    margin: .5rem;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.margin-top {
+    margin-top: 1rem;
+}
+
+.no-margin-top {
+    margin-top: 0;
+}
+
+.margin-bottom {
+    margin-bottom: 1rem;
+}
+
+.only-margin-top {
+    margin-top: .5rem;
+    margin-bottom: 0;
+}
+
+/* Card */
+.card,
+.medium-card,
+.dark-card {
+    width: fit-content;
+    border-radius: 15px;
+}
+
+.card {
+    background-color: #f9e6d7;
+}
+
+.medium-card {
+    background-color: #f6d0b3;
+}
+
+.dark-card {
+    background-color: #de7a57;
+    color: #fff;
+}
+
+.card.auto,
+.medium-card.auto,
+.dark-card.auto {
+    width: auto;
+}
+
+.card:not(.no-padding):not(.half-padding),
+.medium-card:not(.no-padding):not(.half-padding),
+.dark-card:not(.no-padding):not(.half-padding) {
+    padding: 1rem;
+}
+
+.card:not(.no-margin):not(.margin-top),
+.medium-card:not(.no-margin):not(.margin-top),
+.dark-card:not(.no-margin):not(.margin-top) {
+    margin: 1rem;
+}
+
+.card h3,
+.medium-card h3,
+.dark-card h3 {
+    margin-top: 0;
+}
+
+.flex-fit-card {
+    width: -webkit-fill-available;
+    padding: .5rem;
+    text-align: center;
+}
+
+.details {
+    font-size: 14px;
+}
+
+/* Container remove */
+.container-remove{
+    width: calc(100% + 2.5rem);
+}
+
+/* Small screens */
+
+@media only screen and (max-width: 400px) {
+    .background-transparent-small {
+        background-color: transparent !important;
+    }
+}
