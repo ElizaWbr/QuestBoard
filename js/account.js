@@ -15,12 +15,9 @@ let currentUser;
 /* Auth state */
 function checkCurrentUser(user) {
     if (user) {
-        console.log(user);
         currentUser = {"name": user.displayName, "email": user.email, "uid": user.uid, "image": user.photoURL};
-        console.log(currentUser);
     } else {
         currentUser = null;
-        console.log("Nenhum usuário autenticado.");
     }
 }
 

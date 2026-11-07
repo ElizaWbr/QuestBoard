@@ -65,8 +65,6 @@ function renderDayCalendarHtml() {
 
         $("#" + dayEventId).on("click", function () {
             redirectToAcceptedOrCreatedEvent(quest.id, quest.author);
-
-            // console.log("Evento selecionado:", quest);
         });
     });
 }

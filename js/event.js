@@ -1,4 +1,4 @@
-import { getQuestData, formatDateObject, formatDate, getCustomerConfirmedInAccepted, confirmInAccepted, reloadPage, removeFromAccepted, redirectToEventPageUrl, validateQuestInUser, isQuestDeleted, displayDeletedEventWarning, isCurrentUserAuthor } from "./crud.js";
+import { getQuestData, formatDateObject, formatDate, getCustomerConfirmedInAccepted, confirmInAccepted, reloadPage, removeFromAccepted, redirectToEventPageUrl, validateQuestInUser, isQuestDeleted, displayDeletedEventWarning, isCurrentUserAuthor, getWhatsappUrl } from "./crud.js";
 import { disableLoader } from "./loader.js";
 
 $(document).ready(async function () {
@@ -89,7 +89,7 @@ async function setSavedData() {
 
 function updateQuestSummary(quest) {
     let mailto = "mailto:" + quest.contact_email;
-    let phoneto = "https://wa.me/" + quest.contact_phone;
+    let phoneto = getWhatsappUrl(quest.contact_phone);
 
     let image = quest.image;
     if (!image) {
@@ -138,6 +138,6 @@ function addRemoveEventAction(id) {
 
     $("#remove-event-confirm").on("click", async function () {
         await removeFromAccepted(id);
-        redirectToEventPageUrl();
+        redirectToEventPageUrl(id);
     });
 }

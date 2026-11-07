@@ -1,5 +1,5 @@
 import { firebaseDB } from "./firebase.js";
-import { getQuestDatabaseName, getAcceptedDatabaseName, getCreatedDatabaseName, formatDate, getManagePageUrl, getEnterQuestPageUrl, removeFromAccepted, getDeletedEventMessage, isQuestDeleted, getCurrentUserUid } from "./crud.js";
+import { getQuestDatabaseName, getAcceptedDatabaseName, getCreatedDatabaseName, formatDate, getManagePageUrl, getEnterQuestPageUrl, removeFromAccepted, getDeletedEventMessage, isQuestDeleted, getCurrentUserUid, getWhatsappUrl } from "./crud.js";
 import { collection, getDocs, query, where, documentId } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { disableLoader } from "./loader.js";
 
@@ -122,7 +122,7 @@ function buildQuestHtml(quest, type, container) {
     let date_end = formatDate(quest.date_end);
 
     let mailto = "mailto:" + quest.contact_email;
-    let phoneto = "https://wa.me/" + quest.contact_phone;
+    let phoneto = getWhatsappUrl("+55 51 98923-2339");
 
     /* Top */
     html += "<div class='container-round-small-event-details top'>";
@@ -233,14 +233,14 @@ function removeRelationAndAddMessage(quest) {
 
     $("#" + removeId).on("click", async function () {
         let id = $(this).val();
-        await removeFromMe(id);
+        await removeFromAccepted(id);
         $("#created-removed-quest-container-" + id).slideUp();
     });
 }
 
-async function removeFromMe(id) {
-    await removeFromAccepted(id);
-}
+// async function removeFromMe(id) {
+//     await removeFromAccepted(id);
+// }
 
 export async function getCurrentUserCreatedEvents() {
     let database = await getCreatedDatabaseName();

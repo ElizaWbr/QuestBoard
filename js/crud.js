@@ -116,11 +116,18 @@ export async function addEvent(data) {
 
     let databaseName = await getQuestDatabaseName();
     const docRef = await addDoc(collection(firebaseDB, databaseName), data);
-    console.log("Evento registrado.");
 
     await saveInCreated(docRef.id);
 
     redirectToManagePageUrl(docRef.id);
+}
+
+export async function updateEventAndReload(id, data) {
+    if (!id) {
+        return;
+    }
+    await updateEvent(id, data);
+    reloadPage();
 }
 
 export async function updateEvent(id, data) {
@@ -131,30 +138,22 @@ export async function updateEvent(id, data) {
     data.dtup = serverTimestamp();
     let docRef = await getQuestDoc(id);
 
-    console.log(data);
-
     await updateDoc(docRef, data);
-
-    console.log("Evento atualizado");
-    reloadPage();
 }
 
 export async function deleteEvent(id) {
     if (!id) {
-        console.log("Não tem como deletar um evento que não existe");
         return;
     }
     let databaseName = await getQuestDatabaseName(id);
     const docRef = doc(firebaseDB, databaseName);
     const snap = await getDoc(docRef);
     if (!snap.exists()) {
-        console.log("Não tem como deletar um evento que não existe");
         return;
     }
 
     let data = snap.data();
     if (isQuestDeleted(data)) {
-        console.log("Este evento já foi deletado.")
         return;
     }
     await setDoc(docRef, {
@@ -166,9 +165,6 @@ export async function deleteEvent(id) {
         dtup: data.dtup,
         deleted: serverTimestamp(),
     });
-
-    //await deleteDoc(docRef);
-    console.log("Evento deletado.");
 
     await removeFromCreated(docRef.id);
     reloadPage();
@@ -249,7 +245,6 @@ export async function saveInAccepted(id) {
     });
 
     await updateMembers(id, true);
-
     return docRef.id;
 }
 
@@ -268,7 +263,6 @@ export async function confirmInAccepted(id) {
     await updateDoc(docRef, {
         confirmed: serverTimestamp()
     });
-    console.log("Accepted atualizado");
 
     await updateConfirmed(id, true);
     return docRef.id;
@@ -289,8 +283,7 @@ export async function removeFromAccepted(id) {
                 await updateConfirmed(id, false);
             }
         }
-
-        updateMembers(id, false);
+        await updateMembers(id, false);
         await deleteDoc(docRef);
     } catch (error) {
         console.error("Erro ao remover evento:", error);
@@ -321,6 +314,12 @@ export function formatDateObject(date) {
     let toDate = date.toDate();
     return toDate.toLocaleString("pt-BR");
 }
+
+export function getWhatsappUrl(phone) {
+    let fixed = phone.replace(/\s/g, "").replace("-", "");
+    return "https://wa.me/" + fixed;
+}
+
 
 /* Redirect */
 
