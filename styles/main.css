@@ -39,6 +39,14 @@
     height: calc(100vh - 150px);
     /* total - (2 * padding + topbar height) */
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% - 70px);
+}
+
+.body-content div {
+    max-width: 500px;
 }
 
 .full-screen {

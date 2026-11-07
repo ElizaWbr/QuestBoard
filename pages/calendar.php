@@ -27,7 +27,7 @@ $quest_board_page_id = "calendar";
 
 	<!-- Content -->
 	<div class="body-content">
-		<div class="medium-card auto no-margin">
+		<div class="medium-card full-width no-margin">
 			<div class="calendar-header">
 				<div class="calendar-navigation">
 					<button id="calendar-prev" type="button" class="btn round flex-center-center"

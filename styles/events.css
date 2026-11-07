@@ -17,9 +17,9 @@
 
 .event-form {
     height: max-content;
-    width: 100%;
     margin: 1rem 0;
     background-color: transparent;
+    width: fit-content;
 }
 
 .event-form .container-round-medium:not(.margin-top):not(.margin):not(.no-margin):not(.last){
