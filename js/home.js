@@ -1,6 +1,6 @@
 import { formatCalendarDate } from "./calendar.js";
 import { getCurrentUserAcceptedEvents, getCurrentUserCreatedEvents } from "./created-events.js";
-import { formatDate, getAcceptedOrCreatedEventUrl } from "./crud.js";
+import { formatDate, getAcceptedOrCreatedEventUrl, getManagePageUrl } from "./crud.js";
 import { disableLoader } from "./loader.js";
 
 $(document).ready(async function () {
@@ -11,16 +11,30 @@ $(document).ready(async function () {
 });
 
 async function buildNextEvent() {
+    let url = "";
+    let eventText = "";
+    let buttonImage = "";
+    let buttonText = "";
+
     let nextEvent = await getNextUserEvent();
-    let url = await getAcceptedOrCreatedEventUrl(nextEvent.id, nextEvent.author);
+    if (nextEvent) {
+        url = await getAcceptedOrCreatedEventUrl(nextEvent.id, nextEvent.author);
+        eventText = "Seu próximo evento é o " + nextEvent.name + " no dia " + formatDate(nextEvent.date_start) + ".";
+        buttonImage = "<img src='../images/icons/eye.svg' alt='Plus' class='icon medium' />";
+        buttonText = "Ver o evento";
+    } else {
+        url = getManagePageUrl();
+        eventText = "Você ainda não está em nenhum evento, fale com seus amigos para entrar em um ou crie o seu.";
+        buttonImage = "<img src='../images/icons/plus.svg' alt='Plus' class='icon medium' />";
+        buttonText = "Adicionar um evento";
+    }
 
     let html = "<span class='text-center'>";
-    html += "Seu próximo evento é o " + nextEvent.name + " no dia " + formatDate(nextEvent.date_start) + ".";
+    html += eventText;
     html += "</span>";
-
     html += "<a href='" + url + "' class='btn text-icon'>";
-    html += "<img src='../images/icons/eye.svg' alt='Plus' class='icon medium' />";
-    html += "Ver o evento";
+    html += buttonImage;
+    html += buttonText;
     html += "</a>";
 
     $("#user-next-event").html(html);
@@ -80,7 +94,7 @@ async function currentMonthEvents() {
     };
 }
 
-async function getEvents(){
+async function getEvents() {
     let createdEvents = await getCurrentUserCreatedEvents();
     let acceptedEvents = await getCurrentUserAcceptedEvents();
     let events = [...createdEvents, ...acceptedEvents];

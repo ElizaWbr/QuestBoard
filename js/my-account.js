@@ -18,7 +18,6 @@ function checkCurrentUser(user) {
             "uid": user.uid,
             "image": user.photoURL
         };
-        console.log(userData);
         buildUserData(userData);
     }
 }

@@ -1,4 +1,4 @@
-import { addEvent, updateEvent, deleteEvent, getCurrentUser, redirectToEventPageUrl, isQuestDeleted } from "./crud.js";
+import { addEvent, updateEvent, deleteEvent, getCurrentUser, redirectToEventPageUrl, isQuestDeleted, updateEventAndReload } from "./crud.js";
 import { getQuestData, formatDateObject } from "./crud.js";
 import { disableLoader } from "./loader.js";
 
@@ -83,10 +83,8 @@ async function doSaveEvent() {
     if (id == "") {
         await addEvent(data);
     } else {
-        await updateEvent(id, data);
+        await updateEventAndReload(id, data);
     }
-
-    console.log(data);
 }
 
 async function doDeleteEvent(){
@@ -127,9 +125,7 @@ async function setSavedData() {
         redirectToEventPageUrl(questId);
         return;
     }
-
-    console.log(quest);
-
+    
     updateQuestSummary(quest);
 
     $("#event-name").val(quest.name);
