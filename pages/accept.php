@@ -30,7 +30,7 @@ $banner_title = "Entrar em Evento";
 		<div>
 			<?php include_once "../components/two-sides-banner.php"; ?>
 		</div>
-		<div id="accept-event-form" class="full-width">
+		<div id="accept-event-form">
 			<div id="accept-event-form-container" class="container-round-medium">
 				<div class="container-round-light">
 					<div class="input-field">
